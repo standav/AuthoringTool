@@ -2,8 +2,8 @@
 
 var locale = angular.module('gloria.locale', []);
 
-function LocaleController($scope, $sce, $gloriaLocale, $window) {
-
+function LocaleController($scope, $sce, $gloriaLocale, $window, gloriaView) {
+	
 	$scope.languages = $gloriaLocale.getLanguages();
 	$scope.language = $gloriaLocale.getPreferredLanguage();
 

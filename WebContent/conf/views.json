@@ -1,0 +1,16 @@
+{
+	"solar": {
+		"html": "partials/solar.html",
+		"js": [
+			"js/experiment/main.js"
+		]
+	},
+	"night": {
+		"html": "partials/night.html",
+		"js": [
+			"js/experiment/main.js"
+		]
+	},
+	"default": {		
+	}
+}

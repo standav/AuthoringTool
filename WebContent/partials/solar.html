@@ -1,5 +1,4 @@
 <!--  Import scripts and css here -->
-<script src="js/experiment/main.js"></script>
 <link href="css/template.css" rel="stylesheet"></link>
 
 <!-- Experiment container -->
@@ -14,7 +13,7 @@
 
 		<div ng-if="!reservationEnd">
 			<div ng-if="!deviceProblem">
-				<div ng-switch="infoUpdated">
+				<div ng-switch on="infoUpdated">
 					<div ng-switch-when="true" class="alert alert-info"
 						style="width: 40%; margin-left: 30%">
 						<div ng-show="reservationObsolete">

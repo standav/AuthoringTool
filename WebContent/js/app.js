@@ -3,42 +3,7 @@
 /* App Module */
 
 var toolbox = angular.module('toolbox', [ 'ngCookies', 'ngRoute', 'ngAnimate',
-		'gloria.locale', 'gloria', 'ui.bootstrap' ]);
-
-function loadDependencies($q, $rootScope, dependencies) {
-	var deferred = $q.defer();
-
-	// Load the dependencies
-	$script(dependencies, function() {
-		// all dependencies have now been loaded by so
-		// resolve the
-		// promise
-		$rootScope.$apply(function() {
-			deferred.resolve();
-		});
-	});
-
-	return deferred.promise;
-}
-
-toolbox.config([
-		'$routeProvider',
-		function($routeProvider) {
-
-			$routeProvider.when(
-					'/experiments/template',
-					{
-						templateUrl : 'partials/template.html',
-						resolve : {
-							deps : function($q, $rootScope) {
-								return loadDependencies($q, $rootScope,
-										[ 'js/experiment/main.js' ]);
-							}
-						}
-					}).otherwise({
-				redirectTo : '/experiments/template'
-			});
-		} ]);
+		'gloria.locale', 'gloria.view', 'gloria', 'ui.bootstrap' ]);
 
 toolbox.filter('utc', [ function() {
 	return function(date) {
