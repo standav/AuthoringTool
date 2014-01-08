@@ -1,16 +1,14 @@
 {
 	"solar": {
-		"html": "partials/solar.html",
+		"html": "partials/template.html",
 		"js": [
-			"js/experiment/main.js"
+			"js/main.js"
 		]
 	},
-	"night": {
-		"html": "partials/night.html",
+	"wrong": {
+		"html": "partials/template.html",
 		"js": [
-			"js/experiment/main.js"
-		]
-	},
-	"default": {		
+			"js/main.js"
+		]		
 	}
 }
