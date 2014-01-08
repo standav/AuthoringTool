@@ -1,8 +1,9 @@
 'use strict';
 
-function TemplateCtrl(GloriaAPI, $scope, $timeout, $gloriaLocale, $routeParams) {
+function TeleoperationExperimentCtrl(GloriaAPI, $scope, $timeout,
+		$gloriaLocale, $routeParams) {
 
-	$gloriaLocale.loadResource('template');
+	$gloriaLocale.loadResource('telexp');
 
 	$scope.requestRid = $routeParams.rid;
 	$scope.reservationEnd = false;
@@ -12,6 +13,8 @@ function TemplateCtrl(GloriaAPI, $scope, $timeout, $gloriaLocale, $routeParams) 
 	$scope.wrongReservation = false;
 	$scope.reservationActive = false;
 	$scope.reservationObsolete = false;
+
+	$scope.specificHtml = 'experiments/teleoperation/content.html';
 
 	/*
 	 * GloriaAPI.getActiveReservations(function(data) {
@@ -39,8 +42,8 @@ function TemplateCtrl(GloriaAPI, $scope, $timeout, $gloriaLocale, $routeParams) 
 			} else if (data.status == "OBSOLETE") {
 				$scope.rid = -1;
 				$scope.reservationObsolete = true;
-				$scope.reservationActive = false;				
-				$scope.infoUpdated = true;				
+				$scope.reservationActive = false;
+				$scope.infoUpdated = true;
 			}
 
 		}, function(error) {

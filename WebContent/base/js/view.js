@@ -8,11 +8,15 @@ function loadDependencies($q, $rootScope, name, gloriaView) {
 	gloriaView.init(function() {
 		var view = gloriaView.getViewInfo(name);
 
-		$script(view.js, function() {
-			$rootScope.$apply(function() {
-				deferred.resolve();
+		if (view != undefined && view.js.length > 0) {
+			$script(view.js, function() {
+				$rootScope.$apply(function() {
+					deferred.resolve();
+				});
 			});
-		});
+		} else {
+			deferred.resolve();
+		}
 	});
 
 	return deferred.promise;
@@ -29,14 +33,12 @@ function ExperimentViewCtrl($scope, $route, $location, gloriaView) {
 	}
 }
 
-
 function ViewCtrl($scope, $route, $location, gloriaView) {
 
 	var view = gloriaView.getViewInfo($location.path().slice(1));
 
 	if (view != undefined) {
-		$scope.templateUrl = gloriaView
-				.getViewInfo($route.current.pathParams.name).html;
+		$scope.templateUrl = view.html;
 	} else {
 		$location.path('/wrong');
 	}
@@ -79,27 +81,25 @@ v.service('gloriaView', function($http) {
 
 v.config(function($routeProvider, $locationProvider) {
 	$routeProvider.when(
-		'/experiments/:name',
-		{
-			template : '<div ng-include src="templateUrl"></div>',
-			controller : ExperimentViewCtrl,
-			resolve : {
-				deps : function($q, $rootScope, gloriaView, $route) {
-					return loadDependencies($q, $rootScope,
-							$route.current.pathParams.name, gloriaView);
+			'/experiments/:name',
+			{
+				template : '<div ng-include src="templateUrl"></div>',
+				controller : ExperimentViewCtrl,
+				resolve : {
+					deps : function($q, $rootScope, gloriaView, $route) {
+						return loadDependencies($q, $rootScope,
+								$route.current.pathParams.name, gloriaView);
+					}
 				}
+			}).when('/wrong', {
+		template : '<div ng-include src="templateUrl"></div>',
+		controller : ViewCtrl,
+		resolve : {
+			deps : function($q, $rootScope, gloriaView, $route) {
+				return loadDependencies($q, $rootScope, 'wrong', gloriaView);
 			}
-		}).when('/wrong', {
-			template : '<div ng-include src="templateUrl"></div>',
-			controller : ViewCtrl,
-			resolve : {
-				deps : function($q, $rootScope, gloriaView, $route) {
-					return loadDependencies($q, $rootScope, 'wrong', gloriaView);
-				}
-			}
-		}).otherwise({
-			redirectTo : '/wrong',
-		});
-
-	// $locationProvider.html5Mode(true);
+		}
+	}).otherwise({
+		redirectTo : '/wrong',
+	});
 });

@@ -1,14 +1,12 @@
 {
 	"solar": {
-		"html": "partials/template.html",
+		"html": "experiments/teleoperation/parent.html",
 		"js": [
-			"js/main.js"
+			"experiments/teleoperation/main.js"
 		]
 	},
 	"wrong": {
-		"html": "partials/template.html",
-		"js": [
-			"js/main.js"
-		]		
+		"html": "partials/wrong.html",
+		"js": []		
 	}
 }
