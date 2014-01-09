@@ -8,9 +8,6 @@ var host = 'localhost';
 var protocol = 'http';
 var port = '8080';*/
 
-/*
- * var host = 'localhost'; var protocol = 'http'; var port = '8080';
- */
 /* App Module */
 var gloria = angular.module('gloria', []);
 
@@ -184,6 +181,13 @@ function GloriaApiHandler(HttpWrapper, $q) {
 
 		return this.processRequest('get',
 				'GLORIAAPI/users/authenticate?verify=true', null, success,
+				error);
+	};
+	
+	this.getUserInformation = function(success, error, unauthorized) {
+
+		return this.processRequest('get',
+				'GLORIAAPI/users/info', null, success,
 				error);
 	};
 

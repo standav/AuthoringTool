@@ -30,4 +30,8 @@ function GenericCtrl(GloriaAPI, $scope, $timeout,
 		$timeout.cancel($scope.unauthTimer);
 		$timeout.cancel($scope.srvTimer);		
 	});
+	
+	GloriaAPI.getUserInformation(function(data) {
+		console.log(data);
+	});
 }
