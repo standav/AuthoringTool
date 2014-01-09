@@ -3,7 +3,7 @@
 function TeleoperationExperimentCtrl(GloriaAPI, $scope, $timeout,
 		$gloriaLocale, $routeParams) {
 
-	$gloriaLocale.loadResource('experiments/teleoperation', 'texts');
+	$gloriaLocale.loadResource('templates/experiments/teleoperation', 'telexp');
 
 	$scope.requestRid = $routeParams.rid;
 	$scope.reservationEnd = false;
@@ -14,7 +14,7 @@ function TeleoperationExperimentCtrl(GloriaAPI, $scope, $timeout,
 	$scope.reservationActive = false;
 	$scope.reservationObsolete = false;
 
-	$scope.specificHtml = 'experiments/teleoperation/content.html';
+	$scope.specificHtml = 'templates/experiments/teleoperation/content.html';
 
 	$scope.onReservation = function() {
 		GloriaAPI.getReservationInformation($scope.preRid, function(data) {

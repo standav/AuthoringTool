@@ -6,7 +6,7 @@ function loadDependencies($q, $rootScope, name, gloriaView) {
 	var deferred = $q.defer();
 
 	gloriaView.init(function() {
-		var view = gloriaView.getViewInfo(name);
+		var view = gloriaView.getViewInfoByName(name);
 
 		if (view != undefined && view.js.length > 0) {
 			$script(view.js, function() {
@@ -24,7 +24,7 @@ function loadDependencies($q, $rootScope, name, gloriaView) {
 
 function ExperimentViewCtrl($scope, $route, $location, gloriaView) {
 
-	var view = gloriaView.getViewInfo($route.current.pathParams.name);
+	var view = gloriaView.getViewInfoByName($route.current.pathParams.name);
 
 	if (view != undefined) {
 		$scope.templateUrl = view.html;
@@ -35,13 +35,40 @@ function ExperimentViewCtrl($scope, $route, $location, gloriaView) {
 
 function ViewCtrl($scope, $route, $location, gloriaView) {
 
-	var view = gloriaView.getViewInfo($location.path().slice(1));
+	var view = gloriaView.getViewInfoByPath($location.path());
 
 	if (view != undefined) {
 		$scope.templateUrl = view.html;
 	} else {
 		$location.path('/wrong');
 	}
+}
+
+
+function MainViewCtrl($scope, $route, $location, gloriaView) {
+
+	var view = gloriaView.getViewInfoByPath($location.path());
+
+	if (view != undefined) {
+		$scope.templateUrl = view.html;
+	} else {
+		$location.path('/wrong');
+	}
+	
+	var views = gloriaView.getViews();
+	
+	$scope.views = [];
+	
+	var i = 0;
+	for (var key in views) {
+		$scope.views.push(views[key]);
+		$scope.views[i].name = key;
+		i++;
+	}	
+	
+	$scope.gotoView = function (name) {
+		$location.path(name);
+	};
 }
 
 v.service('gloriaView', function($http) {
@@ -71,8 +98,20 @@ v.service('gloriaView', function($http) {
 				}
 			}
 		},
-		getViewInfo : function(name) {
+		getViewInfoByName : function(name) {
 			return views[name];
+		},
+		getViewInfoByPath : function(path) {
+			for ( var key in views) {
+				if (views[key].path == path) {
+					return views[key];
+				}
+			}
+
+			return undefined;
+		},
+		getViews : function () {
+			return views;
 		}
 	};
 
@@ -81,7 +120,7 @@ v.service('gloriaView', function($http) {
 
 v.config(function($routeProvider, $locationProvider) {
 	$routeProvider.when(
-			'/experiments/:name',
+			'/templates/experiments/teleoperation/:name',
 			{
 				template : '<div ng-include src="templateUrl"></div>',
 				controller : ExperimentViewCtrl,
@@ -91,15 +130,31 @@ v.config(function($routeProvider, $locationProvider) {
 								$route.current.pathParams.name, gloriaView);
 					}
 				}
-			}).when('/wrong', {
-		template : '<div ng-include src="templateUrl"></div>',
-		controller : ViewCtrl,
-		resolve : {
-			deps : function($q, $rootScope, gloriaView, $route) {
-				return loadDependencies($q, $rootScope, 'wrong', gloriaView);
+		}).when('/templates/generic', {
+			template : '<div ng-include src="templateUrl"></div>',
+			controller : ViewCtrl,
+			resolve : {
+				deps : function($q, $rootScope, gloriaView) {
+					return loadDependencies($q, $rootScope, 'generic', gloriaView);
+				}
 			}
-		}
-	}).otherwise({
-		redirectTo : '/wrong',
-	});
+		}).when('/', {
+			template : '<div ng-include src="templateUrl"></div>',
+			controller : MainViewCtrl,
+			resolve : {
+				deps : function($q, $rootScope, gloriaView) {
+					return loadDependencies($q, $rootScope, 'main', gloriaView);
+				}
+			}
+		}).when('/wrong', {
+			template : '<div ng-include src="templateUrl"></div>',
+			controller : ViewCtrl,
+			resolve : {
+				deps : function($q, $rootScope, gloriaView) {
+					return loadDependencies($q, $rootScope, 'wrong', gloriaView);
+				}
+			}
+		}).otherwise({
+			redirectTo : '/wrong',
+		});
 });

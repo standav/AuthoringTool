@@ -1,12 +1,26 @@
 {
 	"solar": {
-		"html": "experiments/teleoperation/parent.html",
+		"path": "/templates/experiments/teleoperation/solar",
+		"html": "templates/experiments/teleoperation/parent.html",
 		"js": [
-			"experiments/teleoperation/main.js"
+			"templates/experiments/teleoperation/main.js"
+		]
+	},
+	"generic": {
+		"path": "/templates/generic",
+		"html": "templates/generic/parent.html",
+		"js": [
+			"templates/generic/main.js"
 		]
 	},
 	"wrong": {
+		"path": "/wrong",
 		"html": "base/html/wrong.html",
+		"js": []		
+	},
+	"main": {
+		"path": "/",
+		"html": "base/html/main.html",
 		"js": []		
 	}
 }
