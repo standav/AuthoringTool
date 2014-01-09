@@ -50,35 +50,35 @@ locale.service('$gloriaLocale',
 				getLanguage : function() {
 					return $locale.id;
 				},
-				loadResource : function(type) {
-					var url = 'lang/lang_' + type + '_' + $locale.id
+				loadResource : function(path, name) {
+					var url = path + '/lang_' + name + '_' + $locale.id
 							+ '.json';
 					$http({
 						method : "GET",
 						url : url,
 						cache : false
 					}).success(function(data) {
-						$locale.dictionary[type] = data;
+						$locale.dictionary[name] = data;
 					}).error(function() {
-						var url = 'lang/lang_' + type + '_en.json';
+						var url = path + '/lang_' + name + '_en.json';
 						$http({
 							method : "GET",
 							url : url,
 							cache : false
 						}).success(function(data) {
-							$locale.dictionary[type] = data;
+							$locale.dictionary[name] = data;
 						}).error(function() {
 							alert("Locale resource problem!");
 						});
 
 					});
 
-					if (resourcesLoaded.indexOf(type) < 0) {
-						resourcesLoaded.push(type);
-					}
+					/*if (resourcesLoaded.indexOf(name) < 0) {
+						resourcesLoaded.push(name);
+					}*/
 				},
-				loadCore : function(lang, post) {
-					var url = 'lang/lang_core_' + lang + '.json';
+				loadCore : function(path, lang, post) {
+					var url = path + '/lang_core_' + lang + '.json';
 					$http({
 						method : "GET",
 						url : url,
@@ -92,7 +92,7 @@ locale.service('$gloriaLocale',
 							post();
 						}
 					}).error(function() {
-						var url = 'lang/lang_core_en.json';
+						var url = path + '/lang_core_en.json';
 						$http({
 							method : "GET",
 							url : url,
@@ -120,8 +120,8 @@ locale.service('$gloriaLocale',
 				}
 			};
 
-			gLocale.loadCore(preferredLang, function() {
-				gLocale.loadResource('base');
+			gLocale.loadCore('base/lang', preferredLang, function() {
+				gLocale.loadResource('base/lang', 'base');
 			});
 
 			return gLocale;

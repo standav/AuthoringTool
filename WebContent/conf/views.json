@@ -6,7 +6,7 @@
 		]
 	},
 	"wrong": {
-		"html": "partials/wrong.html",
+		"html": "base/html/wrong.html",
 		"js": []		
 	}
 }

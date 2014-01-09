@@ -3,7 +3,7 @@
 function TeleoperationExperimentCtrl(GloriaAPI, $scope, $timeout,
 		$gloriaLocale, $routeParams) {
 
-	$gloriaLocale.loadResource('telexp');
+	$gloriaLocale.loadResource('experiments/teleoperation', 'texts');
 
 	$scope.requestRid = $routeParams.rid;
 	$scope.reservationEnd = false;
@@ -16,20 +16,6 @@ function TeleoperationExperimentCtrl(GloriaAPI, $scope, $timeout,
 
 	$scope.specificHtml = 'experiments/teleoperation/content.html';
 
-	/*
-	 * GloriaAPI.getActiveReservations(function(data) {
-	 * data.forEach(function(element) { if ($scope.rid == undefined &&
-	 * element.experiment == "SOLAR") {
-	 * 
-	 * if (element.status == "READY") { $scope.rid = element.reservationId;
-	 * $scope.reservationActive = true; $scope.infoUpdated = true; } else if
-	 * (element.status == "SCHEDULED") { $scope.preRid = element.reservationId;
-	 * $scope.resTimer = $timeout($scope.onReservation, 1000); } } }); if
-	 * ($scope.rid == undefined) { $scope.rid = -1; $scope.reservationActive =
-	 * false; } }, function(error) { $scope.rid = -1; $scope.reservationActive =
-	 * false; $scope.infoUpdated = true; }, function() { $scope.notAuthorized =
-	 * true; });
-	 */
 	$scope.onReservation = function() {
 		GloriaAPI.getReservationInformation($scope.preRid, function(data) {
 
