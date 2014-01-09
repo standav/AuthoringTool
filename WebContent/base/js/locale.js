@@ -126,3 +126,27 @@ locale.service('$gloriaLocale',
 
 			return gLocale;
 		});
+
+locale.filter('i18n', function($gloriaLocale) {
+	return function(key, p) {
+
+		var dictionary = $gloriaLocale.getDictionary();
+
+		var keyParts = key.split('.');
+		var value = undefined;
+		keyParts.forEach(function(key) {
+			if (value == undefined) {
+				value = dictionary[key];
+			} else {
+				value = value[key];
+			}
+		});
+
+		if (typeof value != 'undefined' && value != '') {
+
+			var result = (typeof p === "undefined") ? value : value.replace(
+					'@{}@', p);
+			return result;
+		}
+	};
+});
