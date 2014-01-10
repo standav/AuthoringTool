@@ -54,13 +54,13 @@ function NavbarCtrl($scope, $http, $location, $window, $gloriaLocale) {
 				$window.location.pathname = href.app;	
 			}
 			
-			if (href.path != undefined) {
-				$location.path(href.path);
-			}
-			
 			if (href.url != undefined) {
 				$window.location.href = href.url;
 			}
+			
+			if (href.path != undefined) {
+				$location.path(href.path);
+			}			
 		}
 	};
 
