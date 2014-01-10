@@ -1,4 +1,4 @@
-function NavbarCtrl($scope, $http, $location, $gloriaLocale) {
+function NavbarCtrl($scope, $http, $location, $window, $gloriaLocale) {
 
 	$gloriaLocale.loadResource('lang', 'navbar');
 
@@ -8,7 +8,7 @@ function NavbarCtrl($scope, $http, $location, $gloriaLocale) {
 		var cl = '';
 
 		if ($scope.objMenus[menu].href != undefined) {
-			cl = $scope.objMenus[menu].href === currentRoute ? 'active' : '';
+			cl = $scope.objMenus[menu].href.path === currentRoute ? 'active' : '';
 		} else {
 			if ($scope.objMenus[menu].child != undefined) {
 				cl += ' dropdown';
@@ -17,7 +17,7 @@ function NavbarCtrl($scope, $http, $location, $gloriaLocale) {
 						.forEach(function(child) {
 							if (child.href != undefined) {
 								cl += ' '
-										+ (child.href === currentRoute ? 'active'
+										+ (child.href.path === currentRoute ? 'active'
 												: '');
 							}
 						});
@@ -48,7 +48,20 @@ function NavbarCtrl($scope, $http, $location, $gloriaLocale) {
 	};
 
 	$scope.changePath = function(href) {
-		$location.path(href);
+		if (href != undefined) {
+			
+			if (href.app != undefined) {
+				$window.location.pathname = href.app;	
+			}
+			
+			if (href.path != undefined) {
+				$location.path(href.path);
+			}
+			
+			if (href.url != undefined) {
+				$window.location.href = href.url;
+			}
+		}
 	};
 
 	$scope.init = function(then) {

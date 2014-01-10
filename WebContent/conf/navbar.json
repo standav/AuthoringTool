@@ -1,7 +1,9 @@
 {		
 	"home": {
 		"text": "navbar.titles.home",
-		"href": "/"
+		"href": {
+			"path": "/"
+		}
 	},
 	"experiments": {
 		"text": "navbar.titles.experiments.header",
@@ -13,7 +15,9 @@
 			{
 				"type": "link",
 				"text": "navbar.titles.experiments.online.template",
-				"href": "/templates/experiments/teleoperation/test"
+				"href": {
+					"app": "/GLORIASolarExperiment"
+				}
 			},
 			{
 				"type": "divider"			
@@ -26,7 +30,9 @@
 			{
 				"type": "link",
 				"text": "navbar.titles.generic.template",
-				"href": "/templates/generic"
+				"href": {					
+					"path": "/templates/generic"
+				}
 			}			
 		]	
 	}
