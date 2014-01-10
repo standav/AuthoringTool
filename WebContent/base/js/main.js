@@ -54,12 +54,12 @@ function MainController($scope, $rootScope, $http, $sce, $window, $location,
 		
 		if ($scope.options['headerHtml'] != undefined) {
 			$scope.headerHtml = $scope.options['headerHtml'];
-			$sce.trustAs('html', $scope.headerHtml);
+			$sce.trustAs($sce.HTML, $scope.headerHtml);
 		}
 		
 		if ($scope.options['footerHtml'] != undefined) {
 			$scope.footerHtml = $scope.options['footerHtml'];
-			$sce.trustAs('html', $scope.footerHtml);
+			$sce.trustAs($sce.HTML, $scope.footerHtml);
 		}		
 	});
 }
