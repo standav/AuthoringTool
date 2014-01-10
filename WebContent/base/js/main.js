@@ -1,6 +1,10 @@
-function MainController($scope, $http, $rootScope, $gloriaLocale) {
+function MainController($scope, $rootScope, $http, $gloriaLocale) {
 
-	$gloriaLocale.loadResource('lang', 'title');
+	$rootScope.titleLoaded = false;
+	
+	$gloriaLocale.loadResource('lang', 'title', function() {
+		$rootScope.titleLoaded = true;
+	});
 	
 	$scope.init = function(then) {
 		var url = 'conf/env.json';
