@@ -1,6 +1,6 @@
 'use strict';
 
-function LoginController($scope, $location, Login) {
+function LoginController($scope, $location, Login, gloriaView) {
 
 	$scope.loaded = false;
 	$scope.login = {};
@@ -13,15 +13,19 @@ function LoginController($scope, $location, Login) {
 	}, function() {
 		$scope.verified = true;
 	});
+	
+	$scope.gotoMain = function() {
+		$location.path(gloriaView.getMainView().path);
+	};
 
 	$scope.login.connect = function() {
 
-		console.log("Connect!");
+		console.log("Connected!");
 		if ($scope.login.email != null && $scope.login.password != null) {
 			Login.authenticate($scope.login.email, $scope.login.password).then(
 					function() {
 						$scope.login.user = $scope.login.email;
-						$location.path('/main');
+						$scope.gotoMain();
 					}, function() {
 						$scope.login.user = null;
 						$scope.login.email = null;
@@ -31,13 +35,13 @@ function LoginController($scope, $location, Login) {
 	};
 
 	$scope.login.disconnect = function() {
-		console.log("Disconnect!");
+		console.log("Disconnected!");
 		Login.disconnect();
 		$scope.login.user = null;
 		$scope.login.email = null;
 		$scope.login.password = null;
 		document.execCommand("ClearAuthenticationCache");
-		$location.path('/main');
+		$scope.gotoMain();
 	};
 
 	$scope.$on('unauthorized', function() {

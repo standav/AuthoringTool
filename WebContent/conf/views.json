@@ -14,11 +14,13 @@
 		]
 	},
 	"wrong": {
+		"type": "wrong-path",
 		"path": "/wrong",
 		"html": "base/html/wrong.html",
 		"js": []		
 	},
 	"main": {
+		"type": "main",
 		"path": "/",
 		"html": "base/html/main.html",
 		"js": []		
