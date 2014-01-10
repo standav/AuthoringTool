@@ -31,10 +31,10 @@ locale.service('$gloriaLocale',
 						|| $window.navigator.language || 'en-UK';
 				
 				 var languageParts = preferredLang.split("-");
-				 preferredLang = languageParts[0];
+				 preferredLang = languageParts[0];				 
 			}
-
-			var resourcesLoaded = [];
+			
+			$locale.id = preferredLang;
 
 			var gLocale = {
 
@@ -72,10 +72,6 @@ locale.service('$gloriaLocale',
 						});
 
 					});
-
-					/*if (resourcesLoaded.indexOf(name) < 0) {
-						resourcesLoaded.push(name);
-					}*/
 				},
 				loadCore : function(path, lang, post) {
 					var url = path + '/lang_core_' + lang + '.json';
@@ -148,5 +144,7 @@ locale.filter('i18n', function($gloriaLocale) {
 					'@{}@', p);
 			return result;
 		}
+		
+		//return '?';
 	};
 });

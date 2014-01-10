@@ -1,4 +1,8 @@
 eclipse.preferences.version=1
+encoding//WebContent/lang/lang_navbar_en.json=UTF-8
+encoding//WebContent/lang/lang_navbar_es.json=UTF-8
+encoding//WebContent/lang/lang_title_en.json=UTF-8
+encoding//WebContent/lang/lang_title_es.json=UTF-8
 encoding//WebContent/templates/experiments/teleoperation/lang_telexp_en.json=UTF-8
 encoding//WebContent/templates/experiments/teleoperation/lang_telexp_es.json=UTF-8
 encoding//WebContent/templates/generic/lang_generic_en.json=UTF-8

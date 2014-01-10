@@ -1,6 +1,6 @@
 {
-	"solar": {
-		"path": "/templates/experiments/teleoperation/solar",
+	"test": {
+		"path": "/templates/experiments/teleoperation/test",
 		"html": "templates/experiments/teleoperation/parent.html",
 		"js": [
 			"templates/experiments/teleoperation/main.js"

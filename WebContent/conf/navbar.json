@@ -1,0 +1,33 @@
+{		
+	"home": {
+		"text": "navbar.titles.home",
+		"href": "/"
+	},
+	"experiments": {
+		"text": "navbar.titles.experiments.header",
+		"child": [			
+			{
+				"type": "header",
+				"text": "navbar.titles.experiments.online.header"			
+			},
+			{
+				"type": "link",
+				"text": "navbar.titles.experiments.online.template",
+				"href": "/templates/experiments/teleoperation/test"
+			},
+			{
+				"type": "divider"			
+			}			
+		]	
+	},
+	"generic": {
+		"text": "navbar.titles.generic.header",
+		"child": [			
+			{
+				"type": "link",
+				"text": "navbar.titles.generic.template",
+				"href": "/templates/generic"
+			}			
+		]	
+	}
+}
