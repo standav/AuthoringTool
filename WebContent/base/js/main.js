@@ -44,8 +44,8 @@ function MainController($scope, $rootScope, $http, $window, $location,
 	};
 
 	$scope.init(function() {
-		if ($scope.options['navbar']) {
-			$scope.navbarHtml = "base/html/navbar.html";
+		if ($scope.options['navbar'] && $scope.options['navbarHtml'] != undefined) {
+			$scope.navbarHtml = $scope.options['navbarHtml'];
 		}
 
 		if ($scope.options['hubref'] != undefined) {
@@ -59,7 +59,15 @@ function MainController($scope, $rootScope, $http, $window, $location,
 		
 		if ($scope.options['footerHtml'] != undefined) {
 			$scope.footerHtml = $scope.options['footerHtml'];
-		}		
+		}	
+		
+		if ($scope.options['wrongHtml'] != undefined) {
+			$scope.wrongHtml = $scope.options['wrongHtml'];
+		}
+		
+		if ($scope.options['mainHtml'] != undefined) {
+			$scope.wrongHtml = $scope.options['mainHtml'];
+		}
 	});
 }
 
