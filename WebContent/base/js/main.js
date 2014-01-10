@@ -1,4 +1,4 @@
-function MainController($scope, $rootScope, $http, $sce, $window, $location,
+function MainController($scope, $rootScope, $http, $window, $location,
 		$gloriaLocale) {
 
 	$rootScope.titleLoaded = false;
@@ -54,12 +54,15 @@ function MainController($scope, $rootScope, $http, $sce, $window, $location,
 		
 		if ($scope.options['headerHtml'] != undefined) {
 			$scope.headerHtml = $scope.options['headerHtml'];
-			$sce.trustAsResourceUrl($scope.headerHtml);
+			
 		}
 		
 		if ($scope.options['footerHtml'] != undefined) {
 			$scope.footerHtml = $scope.options['footerHtml'];
-			$sce.trustAsResouceUrl($scope.footerHtml);
 		}		
 	});
 }
+
+toolbox.config(function($sceDelegateProvider) {
+	$sceDelegateProvider.resourceUrlWhitelist(['self', 'https://rawgithub.com/fserena/**']);
+});
