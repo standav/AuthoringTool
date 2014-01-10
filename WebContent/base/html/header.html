@@ -1,0 +1,36 @@
+<div ng-controller="LocaleController"
+	class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="pull-left" style="margin-top: 4px; cursor: pointer;"><img
+				ng-click="gotoHub()" style="margin-left: -8px"
+				src="base/img/logos/gloria_logo_small.png"></a>
+			<div class="pull-right"
+				style="height: 22px; margin-top: 10px; margin-left: 20px">
+				<img ng-repeat="lang in languages" ng-click="setLanguage($index)"
+					style="cursor: pointer; height: 100%; margin-left: 1px"
+					ng-src="base/img/flags/{{lang}}.png">
+			</div>
+			<div class="animate-show" ng-show="verified">
+				<div ng-hide="login.user">
+					<form action="" ng-submit="login.connect()"
+						class="navbar-form pull-right">
+						<input ng-model="login.email" name="email" class="span2"
+							type="text" placeholder="Email" required /> <input
+							ng-model="login.password" class="span2" name="password"
+							type="password" placeholder="Password" required />
+						<button class="btn btn-inverse" type="submit">{{'base.login.in'
+							|i18n}}</button>
+					</form>
+				</div>
+				<div ng-show="login.user">
+					<button type="submit" class="pull-right btn btn-inverse"
+						ng-click="login.disconnect()">{{'base.login.out' |i18n}}</button>
+					<div class="span3 pull-right ng-binding"
+						style="padding-top: 10px; padding-right: 5px; margin-right: 20px; text-align: right">{{'base.login.welcome'
+						| i18n}}, {{login.user}}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

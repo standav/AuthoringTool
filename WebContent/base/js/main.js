@@ -51,5 +51,17 @@ function MainController($scope, $rootScope, $http, $window, $location,
 		if ($scope.options['hubref'] != undefined) {
 			$scope.hubref = $scope.options['hubref'];
 		}
+		
+		if ($scope.options['headerHtml'] != undefined) {
+			$scope.headerHtml = $scope.options['headerHtml'];
+		}
+		
+		if ($scope.options['footerHtml'] != undefined) {
+			$scope.footerHtml = $scope.options['footerHtml'];
+		}
+		
+		if ($scope.options['bodyHtml'] != undefined) {
+			$scope.footerHtml = $scope.options['bodyHtml'];
+		}
 	});
 }
