@@ -58,30 +58,17 @@ toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
 	$gloriaLocale.loadResource('lang', 'title', function() {
 
 		$gloriaEnv.after(function() {
-			if ($gloriaEnv.getOption('navbar')
-					&& $gloriaEnv.getOption('navbarHtml') != undefined) {
-				$rootScope.navbarHtml = $gloriaEnv.getOption('navbarHtml');
-			}
-
 			if ($gloriaEnv.getOption('hubref') != undefined) {
 				$rootScope.hubref = $gloriaEnv.getOption('hubref');
-			}
-
-			if ($gloriaEnv.getOption('headerHtml') != undefined) {
-				$rootScope.headerHtml = $gloriaEnv.getOption('headerHtml');
-
-			}
-
-			if ($gloriaEnv.getOption('footerHtml') != undefined) {
-				$rootScope.footerHtml = $gloriaEnv.getOption('footerHtml');
-			}
-
-			if ($gloriaEnv.getOption('wrongHtml') != undefined) {
-				$rootScope.wrongHtml = $gloriaEnv.getOption('wrongHtml');
 			}
 			
 			if ($gloriaEnv.getOption('basePath') != undefined) {
 				$rootScope.basePath = $gloriaEnv.getOption('basePath');
+				$rootScope.headerHtml = $rootScope.basePath + '/html/header.html';
+				$rootScope.footerHtml = $rootScope.basePath + '/html/footer.html';
+				if ($gloriaEnv.getOption('navbar')) {						
+					$rootScope.navbarHtml = $rootScope.basePath + '/html/navbar.html';
+				}
 			}
 
 			$rootScope.titleLoaded = true;
