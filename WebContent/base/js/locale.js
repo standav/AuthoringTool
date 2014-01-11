@@ -1,9 +1,10 @@
 'use strict';
 
 var locale = angular.module('gloria.locale', []);
+var preferredLang;
 
 function LocaleController($scope, $sce, $gloriaLocale, $window, gloriaView) {
-	
+
 	$scope.languages = $gloriaLocale.getLanguages();
 	$scope.language = $gloriaLocale.getPreferredLanguage();
 
@@ -19,15 +20,15 @@ locale.service('$gloriaLocale',
 			var languages = [ 'en', 'es', 'it', 'pl', 'cz', 'ru' ];
 
 			$locale.dictionary = {};
-			var preferredLang = $cookieStore.get('preferredLang');
+			preferredLang = $cookieStore.get('preferredLang');
 			if (preferredLang == undefined) {
 				preferredLang = $window.navigator.userLanguage
 						|| $window.navigator.language || 'en';
-				
-				 var languageParts = preferredLang.split("-");
-				 preferredLang = languageParts[0];				 
+
+				var languageParts = preferredLang.split("-");
+				preferredLang = languageParts[0];
 			}
-			
+
 			$locale.id = preferredLang;
 
 			var gLocale = {
@@ -40,7 +41,7 @@ locale.service('$gloriaLocale',
 				},
 				getLocale : function() {
 					return $locale;
-				},				
+				},
 				getLanguage : function() {
 					return $locale.id;
 				},
@@ -65,7 +66,7 @@ locale.service('$gloriaLocale',
 						}).success(function(data) {
 							$locale.dictionary[name] = data;
 						}).error(function() {
-							alert("Locale resource problem!");
+							alert("Locale resource problem: " + name);
 						});
 
 					});
@@ -80,7 +81,6 @@ locale.service('$gloriaLocale',
 						$locale.DATETIME_FORMATS = data.DATETIME_FORMATS;
 						$locale.NUMBER_FORMATS = data.NUMBER_FORMATS;
 						$locale.id = data.id;
-						$locale.dictionary = {};
 						if (post != undefined) {
 							post();
 						}
@@ -94,7 +94,6 @@ locale.service('$gloriaLocale',
 							$locale.DATETIME_FORMATS = data.DATETIME_FORMATS;
 							$locale.NUMBER_FORMATS = data.NUMBER_FORMATS;
 							$locale.id = data.id;
-							$locale.dictionary = {};
 							if (post != undefined) {
 								post();
 							}
@@ -113,12 +112,22 @@ locale.service('$gloriaLocale',
 				}
 			};
 
-			gLocale.loadCore('base/lang', preferredLang, function() {
-				gLocale.loadResource('base/lang', 'base');
-			});
-
 			return gLocale;
 		});
+
+locale.run(function($gloriaEnv, $gloriaLocale, $rootScope) {
+	$rootScope.headerReady = false;
+
+	$gloriaEnv.after(function() {
+		$gloriaLocale.loadCore($gloriaEnv.getBaseLangPath(), preferredLang,
+				function() {
+					$gloriaLocale.loadResource($gloriaEnv.getBaseLangPath(),
+							'base', function() {
+								$rootScope.headerReady = true;
+							});
+				});
+	});
+});
 
 locale.filter('i18n', function($gloriaLocale) {
 	return function(key, p) {
@@ -141,7 +150,7 @@ locale.filter('i18n', function($gloriaLocale) {
 					'@{}@', p);
 			return result;
 		}
-		
-		//return '?';
+
+		// return '?';
 	};
 });

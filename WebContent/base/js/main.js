@@ -1,29 +1,96 @@
-function MainController($scope, $rootScope, $http, $window, $location,
-		$gloriaLocale) {
+toolbox.service('$gloriaEnv', function($http) {
 
-	$rootScope.titleLoaded = false;
+	var options = null;
+	var initDone = false;
 
-	$gloriaLocale.loadResource('lang', 'title', function() {
-		$rootScope.titleLoaded = true;
-	});
+	var afterSuccess = [];
 
-	$scope.init = function(then) {
-		var url = 'conf/env.json';
+	var gEnv = {
 
-		return $http({
-			method : "GET",
-			url : url,
-			cache : false
-		}).success(function(data) {
-			$scope.options = data;
+		init : function() {
+			var url = 'conf/env.json';
+			return $http({
+				method : "GET",
+				url : url,
+				cache : false
+			}).success(function(data) {
+				options = data;
 
-			if (then != undefined) {
+				initDone = true;
+
+				afterSuccess.forEach(function(then) {
+					if (then != undefined) {
+						then();
+					}
+				});
+			}).error(function() {
+				alert("Options resource problem!");
+				requested = false;
+			});
+		},
+		getOption : function(name) {
+			return options[name];
+		},
+		getBaseLangPath : function() {
+			return options['baseLangPath'];
+		},
+		after : function(then) {
+			if (!initDone) {
+				afterSuccess.push(then);
+			} else {
 				then();
 			}
-		}).error(function() {
-			alert("Options resource problem!");
-		});
+		}
 	};
+
+	return gEnv;
+});
+
+toolbox.config(function($sceDelegateProvider) {
+	$sceDelegateProvider.resourceUrlWhitelist([ 'self',
+			'https://rawgithub.com/fserena/**' ]);
+});
+
+toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
+	
+	$rootScope.titleLoaded = false;
+	
+	$gloriaLocale.loadResource('lang', 'title', function() {
+
+		$gloriaEnv.after(function() {
+			if ($gloriaEnv.getOption('navbar')
+					&& $gloriaEnv.getOption('navbarHtml') != undefined) {
+				$rootScope.navbarHtml = $gloriaEnv.getOption('navbarHtml');
+			}
+
+			if ($gloriaEnv.getOption('hubref') != undefined) {
+				$rootScope.hubref = $gloriaEnv.getOption('hubref');
+			}
+
+			if ($gloriaEnv.getOption('headerHtml') != undefined) {
+				$rootScope.headerHtml = $gloriaEnv.getOption('headerHtml');
+
+			}
+
+			if ($gloriaEnv.getOption('footerHtml') != undefined) {
+				$rootScope.footerHtml = $gloriaEnv.getOption('footerHtml');
+			}
+
+			if ($gloriaEnv.getOption('wrongHtml') != undefined) {
+				$rootScope.wrongHtml = $gloriaEnv.getOption('wrongHtml');
+			}
+
+			$rootScope.titleLoaded = true;
+		});
+		
+		$gloriaEnv.init();
+	});
+});
+
+function MainController($scope, $http, $window, $location,
+		$gloriaLocale, $gloriaEnv) {
+
+	$scope.ready = false;
 
 	$scope.gotoHub = function() {
 		if ($scope.hubref != undefined) {
@@ -42,35 +109,4 @@ function MainController($scope, $rootScope, $http, $window, $location,
 			}
 		}
 	};
-
-	$scope.init(function() {
-		if ($scope.options['navbar'] && $scope.options['navbarHtml'] != undefined) {
-			$scope.navbarHtml = $scope.options['navbarHtml'];
-		}
-
-		if ($scope.options['hubref'] != undefined) {
-			$scope.hubref = $scope.options['hubref'];			
-		}
-		
-		if ($scope.options['headerHtml'] != undefined) {
-			$scope.headerHtml = $scope.options['headerHtml'];
-			
-		}
-		
-		if ($scope.options['footerHtml'] != undefined) {
-			$scope.footerHtml = $scope.options['footerHtml'];
-		}	
-		
-		if ($scope.options['wrongHtml'] != undefined) {
-			$scope.wrongHtml = $scope.options['wrongHtml'];
-		}
-		
-		if ($scope.options['mainHtml'] != undefined) {
-			$scope.wrongHtml = $scope.options['mainHtml'];
-		}
-	});
 }
-
-toolbox.config(function($sceDelegateProvider) {
-	$sceDelegateProvider.resourceUrlWhitelist(['self', 'https://rawgithub.com/fserena/**']);
-});

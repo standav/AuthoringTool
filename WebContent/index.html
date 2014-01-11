@@ -47,13 +47,14 @@
 			<div ng-include src="headerHtml"></div>
 			<div ng-include src="navbarHtml"></div>
 		</div>
-		<div id="body" class="container" style="opacity: 1.0;">
+		<div ng-if="headerReady && navReady" id="body" class="container"
+			style="opacity: 1.0;">
 			<div ng-if="login.user != null && login.user != undefined">
 				<div ng-view></div>
 			</div>
 		</div>
 	</div>
-	<div style="position: relative">
+	<div ng-if="headerReady && navReady" style="position: relative">
 		<div ng-include src="footerHtml"></div>
 	</div>
 </body>

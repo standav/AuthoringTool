@@ -130,7 +130,7 @@ v.config(function($routeProvider, $locationProvider) {
 	$routeProviderReference = $routeProvider;
 });
 
-v.run(function($rootScope, $http, $route, gloriaView) {
+v.run(function($rootScope, $route, gloriaView) {
 	gloriaView.init(function() {
 		var views = gloriaView.getViews();
 

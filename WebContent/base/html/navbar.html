@@ -1,5 +1,5 @@
-<div id="nav-host" ng-show="login.user != null" class="animate-show">
-	<div class="container" ng-controller="NavbarCtrl">
+<div ng-controller="NavbarCtrl" ng-if="headerReady && navReady" id="nav-host" ng-show="login.user != null" class="animate-show">
+	<div class="container">
 		<ul class="nav nav-pills" style="margin-left: -12px">
 
 			<li ng-repeat="menu in menus" ng-class="navClass(menu.name)"><a
