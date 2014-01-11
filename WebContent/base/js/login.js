@@ -1,6 +1,6 @@
 'use strict';
 
-function LoginController($scope, $location, Login, gloriaView) {
+function LoginController($scope, $location, Login, $gloriaView) {
 
 	$scope.loaded = false;
 	$scope.login = {};
@@ -15,7 +15,7 @@ function LoginController($scope, $location, Login, gloriaView) {
 	});
 	
 	$scope.gotoMain = function() {
-		$location.path(gloriaView.getMainView().path);		
+		$location.path($gloriaView.getMainView().path);		
 	};
 
 	$scope.login.connect = function() {

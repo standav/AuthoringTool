@@ -1,6 +1,6 @@
 'use strict';
 
-function TeleoperationExperimentCtrl(GloriaAPI, $scope, $timeout,
+function TeleoperationExperimentCtrl($gloriaAPI, $scope, $timeout,
 		$gloriaLocale, $routeParams) {
 
 	$gloriaLocale.loadResource('templates/experiments/teleoperation', 'telexp');
@@ -17,7 +17,7 @@ function TeleoperationExperimentCtrl(GloriaAPI, $scope, $timeout,
 	$scope.specificHtml = 'templates/experiments/teleoperation/content.html';
 
 	$scope.onReservation = function() {
-		GloriaAPI.getReservationInformation($scope.preRid, function(data) {
+		$gloriaAPI.getReservationInformation($scope.preRid, function(data) {
 
 			if (data.status == 'READY') {
 				$scope.rid = $scope.preRid;

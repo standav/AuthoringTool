@@ -4,11 +4,11 @@ var $routeProviderReference;
 
 var v = angular.module('gloria.view', []);
 
-function loadDependencies($q, $rootScope, $location, gloriaView) {
+function loadDependencies($q, $rootScope, $location, $gloriaView) {
 	var deferred = $q.defer();
 
-	gloriaView.init(function() {
-		var view = gloriaView.getViewInfoByPath($location.path());
+	$gloriaView.init(function() {
+		var view = $gloriaView.getViewInfoByPath($location.path());
 
 		if (view != undefined && view.js.length > 0) {
 			$script(view.js, function() {
@@ -24,28 +24,28 @@ function loadDependencies($q, $rootScope, $location, gloriaView) {
 	return deferred.promise;
 }
 
-function BasicViewCtrl($scope, $route, $location, gloriaView) {
+function BasicViewCtrl($scope, $route, $location, $gloriaView) {
 
-	var view = gloriaView.getViewInfoByPath($location.path());
+	var view = $gloriaView.getViewInfoByPath($location.path());
 
 	if (view != undefined) {
 		$scope.templateUrl = view.html;
 	} else {
-		$location.path(gloriaView.getWrongPathView().path);
+		$location.path($gloriaView.getWrongPathView().path);
 	}
 }
 
-function MainViewCtrl($scope, $route, $location, gloriaView) {
+function MainViewCtrl($scope, $route, $location, $gloriaView) {
 
-	var view = gloriaView.getViewInfoByPath($location.path());
+	var view = $gloriaView.getViewInfoByPath($location.path());
 
 	if (view != undefined) {
 		$scope.templateUrl = view.html;
 	} else {
-		$location.path(gloriaView.getWrongPathView().path);
+		$location.path($gloriaView.getWrongPathView().path);
 	}
 
-	var views = gloriaView.getViews();
+	var views = $gloriaView.getViews();
 
 	$scope.views = [];
 
@@ -61,7 +61,7 @@ function MainViewCtrl($scope, $route, $location, gloriaView) {
 	};
 }
 
-v.service('gloriaView', function($http) {
+v.service('$gloriaView', function($http) {
 
 	var views = null;
 
@@ -130,9 +130,9 @@ v.config(function($routeProvider, $locationProvider) {
 	$routeProviderReference = $routeProvider;
 });
 
-v.run(function($rootScope, $route, gloriaView) {
-	gloriaView.init(function() {
-		var views = gloriaView.getViews();
+v.run(function($rootScope, $route, $gloriaView) {
+	$gloriaView.init(function() {
+		var views = $gloriaView.getViews();
 
 		for ( var key in views) {
 
@@ -147,16 +147,16 @@ v.run(function($rootScope, $route, gloriaView) {
 				template : '<div ng-include src="templateUrl"></div>',
 				controller : reqController,
 				resolve : {
-					deps : function($q, $rootScope, $location, gloriaView) {
+					deps : function($q, $rootScope, $location, $gloriaView) {
 						return loadDependencies($q, $rootScope, $location,
-								gloriaView);
+								$gloriaView);
 					}
 				}
 			});
 		}
 
 		$routeProviderReference.otherwise({
-			redirectTo : gloriaView.getWrongPathView().path,
+			redirectTo : $gloriaView.getWrongPathView().path,
 		});
 
 		$route.reload();

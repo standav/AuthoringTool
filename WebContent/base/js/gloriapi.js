@@ -9,7 +9,7 @@ var protocol = 'http';
 var port = '8080';*/
 
 /* App Module */
-var gloria = angular.module('gloria', []);
+var gloria = angular.module('gloria.api', []);
 
 gloria.config([ '$httpProvider', function($httpProvider) {
 	$httpProvider.defaults.useXDomain = true;
@@ -77,7 +77,7 @@ function SequenceHandler($q) {
 	};
 }
 
-gloria.factory('GloriaAPI', function(HttpWrapper, $q) {
+gloria.factory('$gloriaAPI', function(HttpWrapper, $q) {
 	var api = new GloriaApiHandler(HttpWrapper, $q);
 
 	return api;
@@ -338,7 +338,7 @@ function GloriaApiHandler(HttpWrapper, $q) {
 	};
 }
 
-gloria.factory('Login', function(GloriaAPI, $cookieStore) {
+gloria.factory('Login', function($gloriaAPI, $cookieStore) {
 
 	var token = $cookieStore.get('myGloriaToken');
 	var user = $cookieStore.get('myGloriaUser');
@@ -346,14 +346,19 @@ gloria.factory('Login', function(GloriaAPI, $cookieStore) {
 
 	return {
 		authenticate : function(username, password) {
-			GloriaAPI.setCredentials(username, password);
+			$gloriaAPI.setCredentials(username, password);
 
-			return GloriaAPI.authenticate(function(data) {
+			return $gloriaAPI.authenticate(function(data) {
 				user = username;
 				token = data;
-				$cookieStore.put('myGloriaToken', data);
-				$cookieStore.put('myGloriaUser', username);
-				GloriaAPI.setCredentials(null, token);
+				//$cookieStore.put('myGloriaToken', data);
+				document.cookie="myGloriaToken=%22" + token + "%22;path=/";
+				console.log(document.cookie);
+				
+				//$cookieStore.put('myGloriaUser', username);
+				document.cookie="myGloriaUser=%22" + username + "%22;path=/";
+				
+				$gloriaAPI.setCredentials(null, token);
 				authenticated = true;
 			}, function() {
 				alert("Login failed");
@@ -374,16 +379,16 @@ gloria.factory('Login', function(GloriaAPI, $cookieStore) {
 			user = null;
 			token = null;
 			authenticated = false;
-			GloriaAPI.clearCredentials();
+			$gloriaAPI.clearCredentials();
 		},
 		getToken : function() {
 			return token;
 		},
 		verifyToken : function(success, error) {
 			if (token != undefined) {
-				GloriaAPI.setCredentials(null, token);
-				GloriaAPI.verifyToken(function(data) {
-					GloriaAPI.setCredentials(null, token);
+				$gloriaAPI.setCredentials(null, token);
+				$gloriaAPI.verifyToken(function(data) {
+					$gloriaAPI.setCredentials(null, token);
 					success();
 				}, function() {
 					$cookieStore.remove('myGloriaToken');

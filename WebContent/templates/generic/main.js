@@ -1,6 +1,6 @@
 'use strict';
 
-function GenericCtrl(GloriaAPI, $scope, $timeout,
+function GenericCtrl($gloriaAPI, $scope, $timeout,
 		$gloriaLocale, $routeParams) {
 
 	$gloriaLocale.loadResource('templates/generic', 'generic');
@@ -31,7 +31,7 @@ function GenericCtrl(GloriaAPI, $scope, $timeout,
 		$timeout.cancel($scope.srvTimer);		
 	});
 	
-	GloriaAPI.getUserInformation(function(data) {
+	$gloriaAPI.getUserInformation(function(data) {
 		console.log(data);
 	});
 }

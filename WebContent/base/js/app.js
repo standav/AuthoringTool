@@ -3,7 +3,7 @@
 /* App Module */
 
 var toolbox = angular.module('toolbox', [ 'ngCookies', 'ngRoute', 'ngAnimate',
-		'gloria.locale', 'gloria.view', 'gloria', 'ui.bootstrap' ]);
+		'gloria.locale', 'gloria.view', 'gloria.api', 'ui.bootstrap' ]);
 
 toolbox.filter('utc', [ function() {
 	return function(date) {
