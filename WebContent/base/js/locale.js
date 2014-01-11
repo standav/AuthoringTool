@@ -119,9 +119,9 @@ locale.run(function($gloriaEnv, $gloriaLocale, $rootScope) {
 	$rootScope.headerReady = false;
 
 	$gloriaEnv.after(function() {
-		$gloriaLocale.loadCore($gloriaEnv.getBaseLangPath(), preferredLang,
+		$gloriaLocale.loadCore($gloriaEnv.getBasePath() + '/lang', preferredLang,
 				function() {
-					$gloriaLocale.loadResource($gloriaEnv.getBaseLangPath(),
+					$gloriaLocale.loadResource($gloriaEnv.getBasePath() + '/lang',
 							'base', function() {
 								$rootScope.headerReady = true;
 							});

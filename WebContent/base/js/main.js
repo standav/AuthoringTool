@@ -31,8 +31,8 @@ toolbox.service('$gloriaEnv', function($http) {
 		getOption : function(name) {
 			return options[name];
 		},
-		getBaseLangPath : function() {
-			return options['baseLangPath'];
+		getBasePath : function() {
+			return options['basePath'];
 		},
 		after : function(then) {
 			if (!initDone) {
@@ -78,6 +78,10 @@ toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
 
 			if ($gloriaEnv.getOption('wrongHtml') != undefined) {
 				$rootScope.wrongHtml = $gloriaEnv.getOption('wrongHtml');
+			}
+			
+			if ($gloriaEnv.getOption('basePath') != undefined) {
+				$rootScope.basePath = $gloriaEnv.getOption('basePath');
 			}
 
 			$rootScope.titleLoaded = true;
