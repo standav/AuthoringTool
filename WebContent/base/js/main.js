@@ -31,8 +31,14 @@ toolbox.service('$gloriaEnv', function($http) {
 		getOption : function(name) {
 			return options[name];
 		},
-		getBasePath : function() {
-			return options['basePath'];
+		getContentPath : function() {
+			return options['basePath'].content;
+		},
+		getLangPath : function() {
+			return options['basePath'].lang;
+		},
+		getHtmlPath : function() {
+			return options['basePath'].html;
 		},
 		after : function(then) {
 			if (!initDone) {
@@ -48,7 +54,7 @@ toolbox.service('$gloriaEnv', function($http) {
 
 toolbox.config(function($sceDelegateProvider) {
 	$sceDelegateProvider.resourceUrlWhitelist([ 'self',
-			'https://rawgithub.com/fserena/**' ]);
+			'https://rawgithub.com/fserena/**', 'http://fserena.github.io/**' ]);
 });
 
 toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
@@ -62,15 +68,22 @@ toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
 				$rootScope.hubref = $gloriaEnv.getOption('hubref');
 			}
 			
-			if ($gloriaEnv.getOption('basePath') != undefined) {
-				$rootScope.basePath = $gloriaEnv.getOption('basePath');
-				$rootScope.headerHtml = $rootScope.basePath + '/html/header.html';
-				$rootScope.footerHtml = $rootScope.basePath + '/html/footer.html';
+			var basePath = $gloriaEnv.getOption('basePath');
+					
+			if (basePath != undefined) {
+				
+				$rootScope.contentPath = basePath.content;
+				$rootScope.langPath = basePath.lang;
+				
+				$rootScope.htmlPath = basePath.html;
+				$rootScope.headerHtml = $rootScope.htmlPath + '/header.html';
+				$rootScope.footerHtml = $rootScope.htmlPath + '/footer.html';
+				
 				if ($gloriaEnv.getOption('navbar')) {						
-					$rootScope.navbarHtml = $rootScope.basePath + '/html/navbar.html';
-				}
+					$rootScope.navbarHtml = $rootScope.htmlPath + '/navbar.html';
+				}			
 			}
-
+			
 			$rootScope.titleLoaded = true;
 		});
 		
