@@ -449,15 +449,11 @@ function MainController($scope, $http, $window, $location,
 		if ($scope.hubref != undefined) {
 
 			if ($scope.hubref.app != undefined) {
-				$window.location.hash = '';
+				$window.location.hash = href.path;
 				$window.location.pathname = $scope.hubref.app;
-			}
-
-			if ($scope.hubref.url != undefined) {
+			} else if ($scope.hubref.url != undefined) {
 				$window.location.href = $scope.hubref.url;
-			}
-
-			if ($scope.hubref.path != undefined) {
+			} else if ($scope.hubref.path != undefined) {
 				$location.path($scope.hubref.path);
 			}
 		}
@@ -639,17 +635,13 @@ function NavbarCtrl($scope, $http, $location, $window, $gloriaLocale,
 	$scope.changePath = function(href) {
 		if (href != undefined) {
 
-			if (href.app != undefined) {
-				$window.location.hash = '';
-				$window.location.pathname = href.app;
-			}
-
-			if (href.url != undefined) {
-				$window.location.href = href.url;
-			}
-
-			if (href.path != undefined) {
-				$location.path(href.path);
+			if ($scope.hubref.app != undefined) {
+				$window.location.hash = href.path;
+				$window.location.pathname = $scope.hubref.app;
+			} else if ($scope.hubref.url != undefined) {
+				$window.location.href = $scope.hubref.url;
+			} else if ($scope.hubref.path != undefined) {
+				$location.path($scope.hubref.path);
 			}
 		}
 	};
