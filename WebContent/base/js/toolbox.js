@@ -639,15 +639,15 @@ function NavbarCtrl($scope, $http, $location, $window, $gloriaLocale,
 		if (href != undefined) {
 
 			if (href.app != undefined) {
-				if (href.app.path == undefined) {
-					href.app.path = '';
+				if (href.path == undefined) {
+					href.path = '';
 				}
-				var url = $window.location.origin + '/' + href.app.app + '/#/' + href.app.path;
+				var url = $window.location.origin + '/' + href.app + '/#/' + href.path;
 				$window.location.href = url;
-			} else if (href.app.url != undefined) {
-				$window.location.href = href.app.url;
-			} else if (href.app.path != undefined) {
-				$location.path(href.app.path);
+			} else if (href.url != undefined) {
+				$window.location.href = href.url;
+			} else if (href.path != undefined) {
+				$location.path(href.path);
 			}
 		}
 	};
