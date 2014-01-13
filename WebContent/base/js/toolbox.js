@@ -449,10 +449,11 @@ function MainController($scope, $http, $window, $location,
 		if ($scope.hubref != undefined) {
 
 			if ($scope.hubref.app != undefined) {
-				if ($scope.hubref.path == undefined) {
-					$scope.hubref.path = '';
+				
+				var url = $window.location.origin + '/' + $scope.hubref.app + '/#';
+				if ($scope.hubref.path != undefined) {
+					url += $scope.hubref.path;
 				}
-				var url = $window.location.origin + '/' + $scope.hubref.app + '/#/' + $scope.hubref.path;
 				$window.location.href = url;
 			} else if ($scope.hubref.url != undefined) {
 				$window.location.href = $scope.hubref.url;
@@ -639,10 +640,10 @@ function NavbarCtrl($scope, $http, $location, $window, $gloriaLocale,
 		if (href != undefined) {
 
 			if (href.app != undefined) {
-				if (href.path == undefined) {
-					href.path = '';
+				var url = $window.location.origin + '/' + href.app + '/#';
+				if (href.path != undefined) {
+					url += href.path;
 				}
-				var url = $window.location.origin + '/' + href.app + '/#/' + href.path;
 				$window.location.href = url;
 			} else if (href.url != undefined) {
 				$window.location.href = href.url;
