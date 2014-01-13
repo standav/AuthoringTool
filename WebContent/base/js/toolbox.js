@@ -449,8 +449,11 @@ function MainController($scope, $http, $window, $location,
 		if ($scope.hubref != undefined) {
 
 			if ($scope.hubref.app != undefined) {
-				$window.location.hash = $scope.hubref.path;
-				$window.location.pathname = $scope.hubref.app;
+				if ($scope.hubref.path == undefined) {
+					$scope.hubref.path = '';
+				}
+				var url = $window.location.origin + '/' + $scope.hubref.app + '/#/' + $scope.hubref.path;
+				$window.location.href = url;
 			} else if ($scope.hubref.url != undefined) {
 				$window.location.href = $scope.hubref.url;
 			} else if ($scope.hubref.path != undefined) {
@@ -636,12 +639,15 @@ function NavbarCtrl($scope, $http, $location, $window, $gloriaLocale,
 		if (href != undefined) {
 
 			if (href.app != undefined) {
-				$window.location.hash = href.path;
-				$window.location.pathname = href.app;
-			} else if (href.url != undefined) {
-				$window.location.href = href.url;
-			} else if (href.path != undefined) {
-				$location.path(href.path);
+				if (href.app.path == undefined) {
+					href.app.path = '';
+				}
+				var url = $window.location.origin + '/' + href.app.app + '/#/' + href.app.path;
+				$window.location.href = url;
+			} else if (href.app.url != undefined) {
+				$window.location.href = href.app.url;
+			} else if (href.app.path != undefined) {
+				$location.path(href.app.path);
 			}
 		}
 	};
