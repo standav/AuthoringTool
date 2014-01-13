@@ -449,7 +449,7 @@ function MainController($scope, $http, $window, $location,
 		if ($scope.hubref != undefined) {
 
 			if ($scope.hubref.app != undefined) {
-				$window.location.hash = href.path;
+				$window.location.hash = $scope.hubref.path;
 				$window.location.pathname = $scope.hubref.app;
 			} else if ($scope.hubref.url != undefined) {
 				$window.location.href = $scope.hubref.url;
