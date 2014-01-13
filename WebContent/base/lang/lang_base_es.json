@@ -12,21 +12,24 @@
 		"partners": {
 			"header": "PARTNERS DEL PROYECTO"
 		},
-		"license": {
-			"own":  {
-				"pre": "Todo el contenido de este sitio por el ",
-				"project": "Proyecto GLORIA",
-				"post1": "está bajo la licencia",
-				"name": "Creative Commons Attribution 3.0 Unported License",
-				"post2": "excepto en los casos en que se",
-				"other": "especifique"
-			}
-		},
-		"author": {
-			"pre": "GLORIA Authoring Tool y la plataforma de servicios de GLORIA han sido desarrollados por Fernando Serena",
-			"email": "fserena@ciclope.info",
-			"post": " y son mantenidos en "
-		},
-		"flags": "Todas las imágenes de banderas son de "
+		"bottom": {
+			"header": "AUTORES Y LICENCIAS",
+			"license": {
+				"own":  {
+					"pre": "Todo el contenido de este sitio por el ",
+					"project": "Proyecto GLORIA",
+					"post1": "está bajo la licencia",
+					"name": "Creative Commons Attribution 3.0 Unported License",
+					"post2": "excepto en los casos en que se",
+					"other": "especifique"
+				}
+			},
+			"author": {
+				"pre": "GLORIA Authoring Tool y la plataforma de servicios de GLORIA han sido desarrollados por Fernando Serena",
+				"email": "fserena@ciclope.info",
+				"post": " y son mantenidos en "
+			},
+			"flags": "Todas las imágenes de banderas han sido obtenidas desde "
+		}
 	}
 }
