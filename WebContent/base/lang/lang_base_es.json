@@ -23,8 +23,10 @@
 			}
 		},
 		"author": {
-			"pre": "Desarrollado por Fernando Serena",
-			"email": "fserena@ciclope.info"
-		}	
+			"pre": "GLORIA Authoring Tool y la plataforma de servicios de GLORIA han sido desarrollados por Fernando Serena",
+			"email": "fserena@ciclope.info",
+			"post": " y son mantenidos en "
+		},
+		"flags": "Todas las imágenes de banderas son de "
 	}
 }

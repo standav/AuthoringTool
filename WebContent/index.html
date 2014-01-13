@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- GLORIA Toolbox css and ico files (base path can point to fserena.github.io/AuthoringTool/WebContent) -->
 <link href="base/css/toolbox.css" rel="stylesheet"></link>
 <link href="base/img/favicon.ico" rel="icon">
+<!-- External libraries (jQuery, Angular and UI-Bootstrap) -->
 <script
 	src=https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js></script>
-<script src=bootstrap/js/bootstrap.min.js></script>
 <script
 	src=https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js></script>
 <script
@@ -18,6 +19,8 @@
 	src=https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-cookies.js></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.7.0/ui-bootstrap-tpls.min.js"></script>
+<script src=bootstrap/js/bootstrap.min.js></script>
+<!-- GLORIA Toolbox scripts (base path can point to fserena.github.io/AuthoringTool/WebContent) -->
 <script src="base/js/gloriapi.js"></script>
 <script src="base/js/toolbox.js"></script>
 <script src="base/js/script.js"></script>
@@ -27,11 +30,14 @@
 <body ng-controller="MainController"
 	style="padding-top: 40px; background-attachment: fixed; background-color: black; background-image: url(http://i.imgur.com/L0s0a11.jpg); color: silver;">
 
+	<!-- Main container -->
 	<div class="page-wrap" ng-controller="LoginController">
+		<!-- Page header (top navbar) -->
 		<div id="header">
 			<div ng-include src="headerHtml"></div>
 			<div ng-include src="navbarHtml"></div>
 		</div>
+		<!-- Page body (views) -->
 		<div ng-if="headerReady && navReady" id="body" class="container"
 			style="opacity: 1.0;">
 			<div ng-if="login.user != null && login.user != undefined">
@@ -39,6 +45,7 @@
 			</div>
 		</div>
 	</div>
+	<!-- Page footer -->
 	<div ng-if="headerReady && navReady" style="position: relative">
 		<div ng-include src="footerHtml"></div>
 	</div>

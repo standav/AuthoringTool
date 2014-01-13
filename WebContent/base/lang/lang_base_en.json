@@ -23,8 +23,10 @@
 			}
 		},
 		"author": {
-			"pre": "Developed by Fernando Serena",
-			"email": "fserena@ciclope.info"
-		}	
+			"pre": "GLORIA Authoring Tool and the GLORIA services platform have been developed by Fernando Serena",
+			"email": "fserena@ciclope.info",
+			"post": " and are hosted in "
+		},
+		"flags": "All flag images are from "
 	}
 }
