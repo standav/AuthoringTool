@@ -460,7 +460,7 @@ toolbox.controller('MainController', function($scope, $http, $window, $location,
 
 			if ($scope.hubref.app != undefined) {
 				
-				var url = $window.location.origin + $scope.hubref.app + '/#';
+				var url = $window.location.origin + '/' + $scope.hubref.app + '/#';
 				if ($scope.hubref.path != undefined) {
 					url += $scope.hubref.path;
 				}
@@ -650,7 +650,7 @@ function NavbarCtrl($scope, $http, $location, $window, $gloriaLocale,
 		if (href != undefined) {
 
 			if (href.app != undefined) {
-				var url = $window.location.origin + href.app + '/#';
+				var url = $window.location.origin + '/' + href.app + '/#';
 				if (href.path != undefined) {
 					url += href.path;
 				}

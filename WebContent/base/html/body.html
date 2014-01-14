@@ -1,17 +1,18 @@
 <link ng-href="{{cssPath}}/toolbox.css" rel="stylesheet">
-<div ng-if="toolboxReady" class="page-wrap"
-	ng-controller="LoginController">
-	<div id="header">
-		<div ng-include src="headerHtml"></div>
-		<div ng-include src="navbarHtml"></div>
-	</div>
-	<div ng-if="headerReady && navReady" id="body" class="container"
-		style="opacity: 1.0;">
-		<div ng-if="login.user != null && login.user != undefined">
-			<div ng-view></div>
+<div style="height: 100%" ng-controller="MainController" ng-if="toolboxReady">
+	<div class="page-wrap" ng-controller="LoginController">
+		<div id="header">
+			<div ng-include src="headerHtml"></div>
+			<div ng-include src="navbarHtml"></div>
+		</div>
+		<div ng-if="headerReady && navReady" id="body" class="container"
+			style="opacity: 1.0;">
+			<div ng-if="login.user != null && login.user != undefined">
+				<div ng-view></div>
+			</div>
 		</div>
 	</div>
-</div>
-<div ng-if="headerReady && navReady" style="position: relative">
-	<div ng-include src="footerHtml"></div>
+	<div ng-if="headerReady && navReady" style="position: relative">
+		<div ng-include src="footerHtml"></div>
+	</div>
 </div>
