@@ -1,4 +1,5 @@
-<div style="height: 100%" ng-controller="MainController" ng-if="toolboxReady">
+<div style="height: 100%" ng-controller="MainController"
+	ng-if="toolboxReady">
 	<div class="page-wrap" ng-controller="LoginController">
 		<div id="header">
 			<div ng-include src="headerHtml"></div>
@@ -8,6 +9,26 @@
 			style="opacity: 1.0;">
 			<div ng-if="login.user != null && login.user != undefined">
 				<div ng-view></div>
+			</div>
+			<div ng-show="login.user == null || login.user == undefined">
+				<div class="row" style="height: 650px">
+					<div
+						style="color: white; float:left; margin-right: 0px; width: 55%; padding-bottom: 300px; margin-top: 100px; background-position: center; height: 160px; background-image: url(toolbox/img/back-home.jpg)">
+						<h1 style="margin-left:25px; line-height: 50px; font-size: 50px; margin-top: 30px">Descubre,<br>aprende,<br>investiga,<br>comparte.</h1>
+						<h4 style="margin-top: 185px; margin-left: 25px">GLORIA te abre las puertas del universo.</h4>
+					</div>
+					<div
+						style="float: left; margin-left: 0px; width: 45%; padding-bottom: 300px; margin-top: 100px; background-position: center; height: 160px; background-color: #131313">
+						<h2 style="margin-left: 25px; margin-top: 40px">Regístrate</h2>
+						<form action="" ng-submit="">
+						<input ng-model="bla" name="username" class="span2"
+							type="text" placeholder="Username" required /> <input
+							ng-model="ble" class="span2" name="email"
+							type="text" placeholder="Email" required />
+						<button class="btn btn-inverse" type="submit">Regístrate</button>
+					</form>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
