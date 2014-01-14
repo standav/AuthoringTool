@@ -6,7 +6,8 @@
 
 var locale = angular.module('gloria.locale', []);
 
-locale.controller('LocaleController', function($scope, $sce, $gloriaLocale, $window, $gloriaView) {
+locale.controller('LocaleController', function($scope, $sce, $gloriaLocale,
+		$window, $gloriaView) {
 
 	$scope.languages = $gloriaLocale.getLanguages();
 	$scope.language = $gloriaLocale.getPreferredLanguage();
@@ -288,8 +289,8 @@ v.service('$gloriaView', function($http) {
 
 v.config(function($routeProvider) {
 	v.lazy = {
-		route : $routeProvider	
-	}; 
+		route : $routeProvider
+	};
 });
 
 v.run(function($rootScope, $route, $gloriaView) {
@@ -325,7 +326,6 @@ v.run(function($rootScope, $route, $gloriaView) {
 	});
 });
 
-
 /*
  * Toolbox module (main)
  */
@@ -352,6 +352,16 @@ toolbox.directive('jtooltip', function() {
 		link : function(scope, element, attrs) {
 			$(element).popover(scope.$eval(attrs.jtooltip));
 			$(element).popover('show');
+		}
+	};
+});
+
+toolbox.directive('err-src', function() {
+	return {
+		link : function(scope, element, attrs) {
+			element.bind('error', function() {
+				element.attr('src', attrs.errSrc);
+			});
 		}
 	};
 });
@@ -416,58 +426,59 @@ toolbox.service('$gloriaEnv', function($http) {
 	return gEnv;
 });
 
-toolbox.config(function ($sceDelegateProvider, $filterProvider) {
-    
-	$sceDelegateProvider.resourceUrlWhitelist([ 'self',
-	                                			'https://rawgithub.com/fserena/**', 'http://fserena.github.io/**' ]);
-	
+toolbox.config(function($sceDelegateProvider, $filterProvider) {
+
+	$sceDelegateProvider
+			.resourceUrlWhitelist([ 'self', 'https://rawgithub.com/fserena/**',
+					'http://fserena.github.io/**' ]);
+
 	// save references to the providers
-    toolbox.lazy = {
-        filter: $filterProvider.register,        
-    };    
+	toolbox.lazy = {
+		filter : $filterProvider.register,
+	};
 });
 
-
 toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
-	
+
 	$rootScope.titleLoaded = false;
-	
+
 	$gloriaLocale.loadResource('lang', 'title', function() {
 
 		$gloriaEnv.after(function() {
 			if ($gloriaEnv.getOption('hubref') != undefined) {
 				$rootScope.hubref = $gloriaEnv.getOption('hubref');
 			}
-			
+
 			var basePath = $gloriaEnv.getOption('basePath');
-					
+
 			if (basePath != undefined) {
-				
+
 				$rootScope.jsPath = basePath.js;
 				$rootScope.cssPath = basePath.css;
 				$rootScope.imgPath = basePath.img;
 				$rootScope.langPath = basePath.lang;
-				
+
 				$rootScope.htmlPath = basePath.html;
 				$rootScope.headerHtml = $rootScope.htmlPath + '/header.html';
 				$rootScope.footerHtml = $rootScope.htmlPath + '/footer.html';
 				$rootScope.bodyHtml = $rootScope.htmlPath + '/body.html';
-				
-				if ($gloriaEnv.getOption('navbar')) {						
-					$rootScope.navbarHtml = $rootScope.htmlPath + '/navbar.html';
-				}			
+
+				if ($gloriaEnv.getOption('navbar')) {
+					$rootScope.navbarHtml = $rootScope.htmlPath
+							+ '/navbar.html';
+				}
 			}
-			
+
 			$rootScope.titleLoaded = true;
 			$rootScope.toolboxReady = true;
 		});
-		
+
 		$gloriaEnv.init();
 	});
 });
 
-toolbox.controller('MainController', function($scope, $http, $window, $location,
-		$gloriaLocale, $gloriaEnv) {
+toolbox.controller('MainController', function($scope, $http, $window,
+		$location, $gloriaLocale, $gloriaEnv) {
 
 	$scope.ready = false;
 
@@ -475,12 +486,12 @@ toolbox.controller('MainController', function($scope, $http, $window, $location,
 		if ($scope.hubref != undefined) {
 
 			if ($scope.hubref.app != undefined) {
-				
-				var url = $window.location.origin;				
+
+				var url = $window.location.origin;
 				if ($scope.hubref.app.length > 0) {
-					 url += '/';
+					url += '/';
 				}
-				 url += $scope.hubref.app + '/#';
+				url += $scope.hubref.app + '/#';
 				if ($scope.hubref.path != undefined) {
 					url += $scope.hubref.path;
 				}
@@ -494,7 +505,8 @@ toolbox.controller('MainController', function($scope, $http, $window, $location,
 	};
 });
 
-toolbox.controller('LoginController', function($scope, $location, Login, $gloriaView) {
+toolbox.controller('LoginController', function($scope, $location, Login,
+		$gloriaView) {
 
 	$scope.loaded = false;
 	$scope.login = {};
@@ -507,9 +519,9 @@ toolbox.controller('LoginController', function($scope, $location, Login, $gloria
 	}, function() {
 		$scope.verified = true;
 	});
-	
+
 	$scope.gotoMain = function() {
-		$location.path($gloriaView.getMainView().path);		
+		$location.path($gloriaView.getMainView().path);
 	};
 
 	$scope.login.connect = function() {
@@ -605,9 +617,9 @@ toolbox.service('$gloriaNav', function($http) {
 });
 
 toolbox.run(function($gloriaLocale, $gloriaNav, $rootScope) {
-	
+
 	$rootScope.navReady = false;
-	
+
 	$gloriaLocale.loadResource('lang', 'navbar', function() {
 		$gloriaNav.after(function() {
 			$rootScope.navReady = true;
@@ -616,8 +628,8 @@ toolbox.run(function($gloriaLocale, $gloriaNav, $rootScope) {
 	});
 });
 
-toolbox.controller('NavbarCtrl', function($scope, $http, $location, $window, $gloriaLocale,
-		$gloriaNav) {
+toolbox.controller('NavbarCtrl', function($scope, $http, $location, $window,
+		$gloriaLocale, $gloriaNav) {
 
 	$scope.navClass = function(menu) {
 		var currentRoute = $location.path();
@@ -670,9 +682,9 @@ toolbox.controller('NavbarCtrl', function($scope, $http, $location, $window, $gl
 			if (href.app != undefined) {
 				var url = $window.location.origin;
 				if (href.app.length > 0) {
-					 url += '/';
+					url += '/';
 				}
-				 url += href.app + '/#';
+				url += href.app + '/#';
 				if (href.path != undefined) {
 					url += href.path;
 				}
