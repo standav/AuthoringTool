@@ -1,10 +1,12 @@
 'use strict';
 
-var locale = angular.module('gloria.locale', []);
-var preferredLang;
-//var toolboxReady = false;
+/*
+ * Locale module
+ */
 
-function LocaleController($scope, $sce, $gloriaLocale, $window, $gloriaView) {
+var locale = angular.module('gloria.locale', []);
+
+locale.controller('LocaleController', function($scope, $sce, $gloriaLocale, $window, $gloriaView) {
 
 	$scope.languages = $gloriaLocale.getLanguages();
 	$scope.language = $gloriaLocale.getPreferredLanguage();
@@ -13,7 +15,7 @@ function LocaleController($scope, $sce, $gloriaLocale, $window, $gloriaView) {
 		$gloriaLocale.setPreferredLanguage($scope.languages[index]);
 		$window.location.reload();
 	};
-}
+});
 
 locale.service('$gloriaLocale',
 		function($locale, $http, $window, $cookieStore) {
@@ -21,16 +23,16 @@ locale.service('$gloriaLocale',
 			var languages = [ 'en', 'es', 'it', 'pl', 'cz', 'ru' ];
 
 			$locale.dictionary = {};
-			preferredLang = $cookieStore.get('preferredLang');
-			if (preferredLang == undefined) {
-				preferredLang = $window.navigator.userLanguage
+			locale.preferredLang = $cookieStore.get('preferredLang');
+			if (locale.preferredLang == undefined) {
+				locale.preferredLang = $window.navigator.userLanguage
 						|| $window.navigator.language || 'en';
 
-				var languageParts = preferredLang.split("-");
-				preferredLang = languageParts[0];
+				var languageParts = locale.preferredLang.split("-");
+				locale.preferredLang = languageParts[0];
 			}
 
-			$locale.id = preferredLang;
+			$locale.id = locale.preferredLang;
 
 			var gLocale = {
 
@@ -105,10 +107,10 @@ locale.service('$gloriaLocale',
 					});
 				},
 				getPreferredLanguage : function() {
-					return preferredLang;
+					return locale.preferredLang;
 				},
 				setPreferredLanguage : function(lang) {
-					preferredLang = lang;
+					locale.preferredLang = lang;
 					$cookieStore.put('preferredLang', lang);
 				}
 			};
@@ -120,7 +122,7 @@ locale.run(function($gloriaEnv, $gloriaLocale, $rootScope) {
 	$rootScope.headerReady = false;
 
 	$gloriaEnv.after(function() {
-		$gloriaLocale.loadCore($gloriaEnv.getLangPath(), preferredLang,
+		$gloriaLocale.loadCore($gloriaEnv.getLangPath(), locale.preferredLang,
 				function() {
 					$gloriaLocale.loadResource($gloriaEnv.getLangPath(),
 							'base', function() {
@@ -156,7 +158,9 @@ locale.filter('i18n', function($gloriaLocale) {
 	};
 });
 
-var $routeProviderReference;
+/*
+ * Views module
+ */
 
 var v = angular.module('gloria.view', []);
 
@@ -282,8 +286,10 @@ v.service('$gloriaView', function($http) {
 	return gView;
 });
 
-v.config(function($routeProvider, $locationProvider) {
-	$routeProviderReference = $routeProvider;
+v.config(function($routeProvider) {
+	v.lazy = {
+		route : $routeProvider	
+	}; 
 });
 
 v.run(function($rootScope, $route, $gloriaView) {
@@ -299,7 +305,7 @@ v.run(function($rootScope, $route, $gloriaView) {
 				reqController = MainViewCtrl;
 			}
 
-			$routeProviderReference.when(views[key].path, {
+			v.lazy.route.when(views[key].path, {
 				template : '<div ng-include src="templateUrl"></div>',
 				controller : reqController,
 				resolve : {
@@ -311,7 +317,7 @@ v.run(function($rootScope, $route, $gloriaView) {
 			});
 		}
 
-		$routeProviderReference.otherwise({
+		v.lazy.route.otherwise({
 			redirectTo : $gloriaView.getWrongPathView().path,
 		});
 
@@ -320,7 +326,9 @@ v.run(function($rootScope, $route, $gloriaView) {
 });
 
 
-/* App Module */
+/*
+ * Toolbox module (main)
+ */
 
 var toolbox = angular.module('toolbox', [ 'ngCookies', 'ngRoute', 'ngAnimate',
 		'gloria.locale', 'gloria.view', 'gloria.api', 'ui.bootstrap' ]);
@@ -408,10 +416,17 @@ toolbox.service('$gloriaEnv', function($http) {
 	return gEnv;
 });
 
-toolbox.config(function($sceDelegateProvider) {
+toolbox.config(function ($sceDelegateProvider, $filterProvider) {
+    
 	$sceDelegateProvider.resourceUrlWhitelist([ 'self',
-			'https://rawgithub.com/fserena/**', 'http://fserena.github.io/**' ]);
+	                                			'https://rawgithub.com/fserena/**', 'http://fserena.github.io/**' ]);
+	
+	// save references to the providers
+    toolbox.lazy = {
+        filter: $filterProvider.register,        
+    };    
 });
+
 
 toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
 	
@@ -444,6 +459,7 @@ toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
 			}
 			
 			$rootScope.titleLoaded = true;
+			$rootScope.toolboxReady = true;
 		});
 		
 		$gloriaEnv.init();
@@ -474,7 +490,7 @@ toolbox.controller('MainController', function($scope, $http, $window, $location,
 	};
 });
 
-function LoginController($scope, $location, Login, $gloriaView) {
+toolbox.controller('LoginController', function($scope, $location, Login, $gloriaView) {
 
 	$scope.loaded = false;
 	$scope.login = {};
@@ -494,7 +510,6 @@ function LoginController($scope, $location, Login, $gloriaView) {
 
 	$scope.login.connect = function() {
 
-		console.log("Connected!");
 		if ($scope.login.email != null && $scope.login.password != null) {
 			Login.authenticate($scope.login.email, $scope.login.password).then(
 					function() {
@@ -509,7 +524,6 @@ function LoginController($scope, $location, Login, $gloriaView) {
 	};
 
 	$scope.login.disconnect = function() {
-		console.log("Disconnected!");
 		Login.disconnect();
 		$scope.login.user = null;
 		$scope.login.email = null;
@@ -527,7 +541,7 @@ function LoginController($scope, $location, Login, $gloriaView) {
 		console.log("server down event received!");
 		$scope.login.disconnect();
 	});
-}
+});
 
 toolbox.service('$gloriaNav', function($http) {
 
@@ -598,7 +612,7 @@ toolbox.run(function($gloriaLocale, $gloriaNav, $rootScope) {
 	});
 });
 
-function NavbarCtrl($scope, $http, $location, $window, $gloriaLocale,
+toolbox.controller('NavbarCtrl', function($scope, $http, $location, $window, $gloriaLocale,
 		$gloriaNav) {
 
 	$scope.navClass = function(menu) {
@@ -666,8 +680,4 @@ function NavbarCtrl($scope, $http, $location, $window, $gloriaLocale,
 	$gloriaNav.after(function() {
 		$scope.menus = $gloriaNav.getMenusArray();
 	});
-}
-
-toolbox.run(function($rootScope) {
-	$rootScope.toolboxReady = true;
 });
