@@ -3,10 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- GLORIA Toolbox css and ico files (base path can point to fserena.github.io/AuthoringTool/WebContent) -->
-<link href="base/css/toolbox.css" rel="stylesheet"></link>
-<link href="base/img/favicon.ico" rel="icon">
-<!-- External libraries (jQuery, Angular and UI-Bootstrap) -->
+<link href="http://fserena.github.io/GLORIAAuthoringTool/WebContent/base/img/favicon.ico" rel="icon">
+<!-- Bootstrap css -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- External libraries (jQuery, Angular, Bootstrap and UI-Bootstrap) -->
 <script
 	src=https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js></script>
 <script
@@ -18,36 +20,22 @@
 <script
 	src=https://ajax.googleapis.com/ajax/libs/angularjs/1.2.8/angular-cookies.js></script>
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.7.0/ui-bootstrap-tpls.min.js"></script>
-<script src=bootstrap/js/bootstrap.min.js></script>
-<!-- GLORIA Toolbox scripts (base path can point to fserena.github.io/AuthoringTool/WebContent) -->
-<script src="base/js/gloriapi.js"></script>
-<script src="base/js/toolbox.js"></script>
+	src=https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js></script>
+<script
+	src=https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.7.0/ui-bootstrap-tpls.min.js></script>
+<!-- GLORIA scripts (base path can point to http://fserena.github.io/AuthoringTool/WebContent) -->
+<!-- Script loader -->
 <script src="base/js/script.js"></script>
+<!-- GLORIAjs API -->
+<script src="base/js/gloriapi.js"></script>
+<!-- Toolbox -->
+<script src="base/js/toolbox.js"></script>
 <title ng-show="titleLoaded">{{'title.browser' | i18n}}</title>
 </head>
-
-<body ng-controller="MainController"
+<body>
+</body>
+<body
 	style="padding-top: 40px; background-attachment: fixed; background-color: black; background-image: url(https://i.imgur.com/L0s0a11.jpg); color: silver;">
-
-	<!-- Main container -->
-	<div class="page-wrap" ng-controller="LoginController">
-		<!-- Page header (top navbar) -->
-		<div id="header">
-			<div ng-include src="headerHtml"></div>
-			<div ng-include src="navbarHtml"></div>
-		</div>
-		<!-- Page body (views) -->
-		<div ng-if="headerReady && navReady" id="body" class="container"
-			style="opacity: 1.0;">
-			<div ng-if="login.user != null && login.user != undefined">
-				<div ng-view></div>
-			</div>
-		</div>
-	</div>
-	<!-- Page footer -->
-	<div ng-if="headerReady && navReady" style="position: relative">
-		<div ng-include src="footerHtml"></div>
-	</div>
+	<div style="height: 100%" ng-include src="bodyHtml"></div>
 </body>
 </html>

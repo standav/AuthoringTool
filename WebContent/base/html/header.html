@@ -4,12 +4,12 @@
 		<div class="container">
 			<a class="pull-left" style="margin-top: 4px; cursor: pointer;"><img
 				ng-click="gotoHub()" style="margin-left: -8px"
-				ng-src="{{contentPath}}/img/logos/gloria_logo_small.png"></a>
+				ng-src="{{imgPath}}/logos/gloria_logo_small.png"></a>
 			<div class="pull-right"
 				style="height: 22px; margin-top: 10px; margin-left: 20px">
 				<img ng-repeat="lang in languages" ng-click="setLanguage($index)"
 					style="cursor: pointer; height: 100%; margin-left: 1px"
-					ng-src="{{contentPath}}/img/flags/{{lang}}.png">
+					ng-src="{{imgPath}}/flags/{{lang}}.png">
 			</div>
 			<div class="animate-show" ng-show="verified">
 				<div ng-hide="login.user">

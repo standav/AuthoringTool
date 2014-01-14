@@ -2,6 +2,7 @@
 
 var locale = angular.module('gloria.locale', []);
 var preferredLang;
+//var toolboxReady = false;
 
 function LocaleController($scope, $sce, $gloriaLocale, $window, $gloriaView) {
 
@@ -380,14 +381,20 @@ toolbox.service('$gloriaEnv', function($http) {
 		getOption : function(name) {
 			return options[name];
 		},
-		getContentPath : function() {
-			return options['basePath'].content;
+		getJsPath : function() {
+			return options['basePath'].js;
+		},
+		getImgPath : function() {
+			return options['basePath'].img;
 		},
 		getLangPath : function() {
 			return options['basePath'].lang;
 		},
 		getHtmlPath : function() {
 			return options['basePath'].html;
+		},
+		getCssPath : function() {
+			return options['basePath'].css;
 		},
 		after : function(then) {
 			if (!initDone) {
@@ -421,12 +428,15 @@ toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
 					
 			if (basePath != undefined) {
 				
-				$rootScope.contentPath = basePath.content;
+				$rootScope.jsPath = basePath.js;
+				$rootScope.cssPath = basePath.css;
+				$rootScope.imgPath = basePath.img;
 				$rootScope.langPath = basePath.lang;
 				
 				$rootScope.htmlPath = basePath.html;
 				$rootScope.headerHtml = $rootScope.htmlPath + '/header.html';
 				$rootScope.footerHtml = $rootScope.htmlPath + '/footer.html';
+				$rootScope.bodyHtml = $rootScope.htmlPath + '/body.html';
 				
 				if ($gloriaEnv.getOption('navbar')) {						
 					$rootScope.navbarHtml = $rootScope.htmlPath + '/navbar.html';
@@ -440,7 +450,7 @@ toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
 	});
 });
 
-function MainController($scope, $http, $window, $location,
+toolbox.controller('MainController', function($scope, $http, $window, $location,
 		$gloriaLocale, $gloriaEnv) {
 
 	$scope.ready = false;
@@ -450,7 +460,7 @@ function MainController($scope, $http, $window, $location,
 
 			if ($scope.hubref.app != undefined) {
 				
-				var url = $window.location.origin + '/' + $scope.hubref.app + '/#';
+				var url = $window.location.origin + $scope.hubref.app + '/#';
 				if ($scope.hubref.path != undefined) {
 					url += $scope.hubref.path;
 				}
@@ -462,7 +472,7 @@ function MainController($scope, $http, $window, $location,
 			}
 		}
 	};
-}
+});
 
 function LoginController($scope, $location, Login, $gloriaView) {
 
@@ -640,7 +650,7 @@ function NavbarCtrl($scope, $http, $location, $window, $gloriaLocale,
 		if (href != undefined) {
 
 			if (href.app != undefined) {
-				var url = $window.location.origin + '/' + href.app + '/#';
+				var url = $window.location.origin + href.app + '/#';
 				if (href.path != undefined) {
 					url += href.path;
 				}
@@ -657,3 +667,7 @@ function NavbarCtrl($scope, $http, $location, $window, $gloriaLocale,
 		$scope.menus = $gloriaNav.getMenusArray();
 	});
 }
+
+toolbox.run(function($rootScope) {
+	$rootScope.toolboxReady = true;
+});
