@@ -476,7 +476,11 @@ toolbox.controller('MainController', function($scope, $http, $window, $location,
 
 			if ($scope.hubref.app != undefined) {
 				
-				var url = $window.location.origin + '/' + $scope.hubref.app + '/#';
+				var url = $window.location.origin;				
+				if ($scope.hubref.app.length > 0) {
+					 url += '/';
+				}
+				 url += $scope.hubref.app + '/#';
 				if ($scope.hubref.path != undefined) {
 					url += $scope.hubref.path;
 				}
@@ -664,7 +668,11 @@ toolbox.controller('NavbarCtrl', function($scope, $http, $location, $window, $gl
 		if (href != undefined) {
 
 			if (href.app != undefined) {
-				var url = $window.location.origin + '/' + href.app + '/#';
+				var url = $window.location.origin;
+				if (href.app.length > 0) {
+					 url += '/';
+				}
+				 url += href.app + '/#';
 				if (href.path != undefined) {
 					url += href.path;
 				}
