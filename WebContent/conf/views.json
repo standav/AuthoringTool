@@ -24,5 +24,10 @@
 		"path": "/",
 		"html": "toolbox/html/main.html",
 		"js": []		
+	},
+	"legal": {
+		"path": "/legal",
+		"html": "toolbox/html/legal.html",
+		"js": []
 	}
 }

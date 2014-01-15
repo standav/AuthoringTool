@@ -5,28 +5,59 @@
 			<div ng-include src="headerHtml"></div>
 			<div ng-include src="navbarHtml"></div>
 		</div>
-		<div ng-if="headerReady && navReady" id="body" class="container"
-			style="opacity: 1.0;">
-			<div ng-if="login.user != null && login.user != undefined">
-				<div ng-view></div>
-			</div>
-			<div ng-show="login.user == null || login.user == undefined">
-				<div class="row" style="height: 650px">
-					<div
-						style="color: white; float:left; margin-right: 0px; width: 55%; padding-bottom: 300px; margin-top: 100px; background-position: center; height: 160px; background-image: url(toolbox/img/back-home.jpg)">
-						<h1 style="margin-left:25px; line-height: 50px; font-size: 50px; margin-top: 30px">Descubre,<br>aprende,<br>investiga,<br>comparte.</h1>
-						<h4 style="margin-top: 185px; margin-left: 25px">GLORIA te abre las puertas del universo.</h4>
+		<div ng-if="headerReady && navReady && verified" id="body"
+			class="container" style="opacity: 1.0;">
+			<div ng-switch on="login.user!=null">
+				<div ng-switch-when="true">
+					<div class="view-wrapper">
+						<div ng-view class="reveal-animation"></div>
 					</div>
-					<div
-						style="float: left; margin-left: 0px; width: 45%; padding-bottom: 300px; margin-top: 100px; background-position: center; height: 160px; background-color: #131313">
-						<h2 style="margin-left: 25px; margin-top: 40px">Regístrate</h2>
-						<form action="" ng-submit="">
-						<input ng-model="bla" name="username" class="span2"
-							type="text" placeholder="Username" required /> <input
-							ng-model="ble" class="span2" name="email"
-							type="text" placeholder="Email" required />
-						<button class="btn btn-inverse" type="submit">Regístrate</button>
-					</form>
+				</div>
+				<div ng-switch-when="false">
+					<div style="height: 650px">
+						<div
+							style="color: white; float: left; margin-right: 0px; width: 56%; padding-bottom: 300px; margin-top: 100px; background-position: center; height: 160px; background-image: url(toolbox/img/back-home.jpg)">
+							<h1
+								style="margin-left: 25px; line-height: 50px; font-size: 50px; margin-top: 30px">
+								Descubre,<br>aprende,<br>investiga,<br>comparte.
+							</h1>
+							<h4 style="margin-top: 185px; margin-left: 25px">GLORIA te
+								abre las puertas del universo.</h4>
+						</div>
+						<div
+							style="float: left; margin-left: 0px; width: 44%; padding-bottom: 300px; margin-top: 100px; background-position: center; height: 160px; background-color: #111111">
+							<h2 style="margin-left: 35px; margin-top: 40px">Únete a
+								GLORIA</h2>
+							<div style="margin-left: 35px; margin-top: 35px">
+								<form ng-submit="">
+									<fieldset>
+										<input style="display: block; width: 60%" ng-model="bla"
+											name="username" type="text" placeholder="Usuario" /> <input
+											style="display: block; width: 88%" ng-model="ble"
+											name="email" type="text" placeholder="Correo electrónico" />
+										<div>
+											<input class="span3" ng-model="ble" name="password"
+												type="password" placeholder="Contraseña" /> <label
+												style="color: #D3AF7B; display: inline-block; cursor: default; vertical-align: middle; padding-bottom: 8px; font-size: 85%">Al
+												menos 6 caracteres</label>
+										</div>
+										<input class="span3" style="display: block;" ng-model="ble"
+											name="password" type="password"
+											placeholder="Repetir contraseña" />
+
+										<button class="btn btn-reg" type="submit">
+											<strong>Regístrate</strong>
+										</button>
+										<p
+											style="display: block; margin-top: 15px; padding-right: 25px; color: #D3AF7B; line-height: 14px; font-size: 85%;">
+											Al hacer click en el botón, estás manifestando estar de
+											acuerdo con los <a href="#" style="color: #D3AF7B;">términos y
+												condiciones de acceso a GLORIA</a>
+										</p>
+									</fieldset>
+								</form>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

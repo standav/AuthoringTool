@@ -56,6 +56,41 @@ html,body {
 	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
+.btn-reg {
+	color: #0F0F0F;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #FF9900;
+	background-image: -moz-linear-gradient(top, #FF9900, #FF9900);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#FF9900),
+		to(#FF9900));
+	background-image: -webkit-linear-gradient(top, #FF9900, #FF9900);
+	background-image: -o-linear-gradient(top, #FF9900, #FF9900);
+	background-image: linear-gradient(to bottom, #FF9900, #FF9900);
+	background-repeat: repeat-x;
+	border-color: #111111 #111111 #111111;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffFF9900',
+		endColorstr='#ffFF9900', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	width: 50%;
+	min-height: 40px;
+	height: inherit;
+	font-size: 22px;
+	margin-top: 75px;
+}
+
+.btn-reg:hover,
+.btn-reg:focus,
+.btn-reg:active,
+.btn-reg.active,
+.btn-reg.disabled,
+.btn-reg[disabled] {
+  color: #0F0F0F;
+  background-color: #FF9900;
+  *background-color: #FF9900;
+}
+
+
 .btn-info:hover,
 .btn-info:focus,
 .btn-info:active,
@@ -376,4 +411,14 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
 	color: white;
+}
+
+.view-wrapper {
+	 position: relative;
+}
+
+.reveal-animation {
+	position: absolute;
+	top: 0;
+	left: 0;
 }

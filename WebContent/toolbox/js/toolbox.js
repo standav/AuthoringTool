@@ -510,12 +510,13 @@ toolbox.controller('MainController', function($scope, $http, $window,
 });
 
 toolbox.controller('LoginController', function($scope, $location, Login,
-		$gloriaView) {
+		$gloriaView, $timeout) {
 
 	$scope.loaded = false;
 	$scope.login = {};
 	$scope.login.user = null;
 	$scope.verified = false;
+	$scope.login.failed = false;
 
 	Login.verifyToken(function() {
 		$scope.login.user = Login.getUser();
@@ -535,12 +536,20 @@ toolbox.controller('LoginController', function($scope, $location, Login,
 					function() {
 						$scope.login.user = $scope.login.email;
 						$scope.gotoMain();
-					}, function() {
-						$scope.login.user = null;
-						$scope.login.email = null;
-						$scope.login.password = null;
+					},
+					function() {
+						$scope.login.failed = true;
+						$scope.login.timer = $timeout($scope.login.timeout,
+								1500);
 					});
 		}
+	};
+
+	$scope.login.timeout = function() {
+		$scope.login.failed = false;
+		$scope.login.user = null;
+		$scope.login.email = null;
+		$scope.login.password = null;
 	};
 
 	$scope.login.disconnect = function() {
@@ -560,6 +569,10 @@ toolbox.controller('LoginController', function($scope, $location, Login,
 	$scope.$on('server down', function() {
 		console.log("server down event received!");
 		$scope.login.disconnect();
+	});
+
+	$scope.$on('$destroy', function() {
+		$timeout.cancel($scope.login.timer);
 	});
 });
 
@@ -708,4 +721,22 @@ toolbox.controller('NavbarCtrl', function($scope, $http, $location, $window,
 	$gloriaNav.after(function() {
 		$scope.menus = $gloriaNav.getMenusArray();
 	});
+});
+
+toolbox.animation('.reveal-animation', function() {
+	return {
+		enter : function(element, done) {
+			element.css('display', 'none');
+			element.fadeIn(100, done);
+			return function() {
+				element.stop();
+			};
+		},
+		leave : function(element, done) {
+			element.fadeOut(100, done);
+			return function() {
+				element.stop();
+			};
+		}
+	};
 });

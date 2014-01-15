@@ -338,10 +338,65 @@ function GloriaApiHandler(HttpWrapper, $q) {
 	};
 }
 
-gloria.factory('Login', function($gloriaAPI, $cookieStore) {
+gloria.factory('$myCookie', function() {
+    function fetchValue(name) {
+        var aCookie = document.cookie.split("; ");
+	    for (var i=0; i < aCookie.length; i++)
+	    {
+	        // a name/value pair (a crumb) is separated by an equal sign
+	        var aCrumb = aCookie[i].split("=");
+	        if (name === aCrumb[0])
+	        {
+                var value = '';
+                try {
+                    value = angular.fromJson(aCrumb[1]);
+                } catch(e) {
+	                value = unescape(aCrumb[1]);
+                }
+                return value;
+	        }
+	    }
+	    // a cookie with the requested name does not exist
+	    return null;
+    }
+    return function(name, options) {
+        if(arguments.length === 1) return fetchValue(name);
+        var cookie = name + '=';
+        if(typeof options === 'object') {
+            var expires = '';
+            cookie += (typeof options.value === 'object') ? angular.toJson(options.value) + ';' : options.value + ';';
+            if(options.expires) {
+                var date = new Date();
+                date.setTime( date.getTime() + (options.expires * 24 *60 * 60 * 1000));
+			    expires = date.toGMTString();
+            }
+            cookie += (!options.session) ? 'expires=' + expires + ';' : '';
+            cookie += (options.path) ? 'path=' + options.path + ';' : '';
+            cookie += (options.secure) ? 'secure;' : '';
+        } else {
+            cookie += options + ';';
+        }
+         document.cookie = cookie;
+    };
+});
 
-	var token = $cookieStore.get('myGloriaToken');
-	var user = $cookieStore.get('myGloriaUser');
+gloria.factory('Login', function($gloriaAPI, $cookieStore, $myCookie) {
+
+	//var token = $cookieStore.get('myGloriaToken');
+	//var user = $cookieStore.get('myGloriaUser');
+	var token = $myCookie('myGloriaToken');
+	var reg = new RegExp('"', 'g');
+	
+	if (token != null && token != undefined) {
+		token = token.replace(reg, '');			
+	}
+	
+	var user = $myCookie('myGloriaUser');
+	
+	if (user != null && user != undefined) {
+		user = user.replace(reg, '');
+	}	
+	
 	var authenticated = false;
 
 	return {
@@ -351,19 +406,33 @@ gloria.factory('Login', function($gloriaAPI, $cookieStore) {
 			return $gloriaAPI.authenticate(function(data) {
 				user = username;
 				token = data;
-				//$cookieStore.put('myGloriaToken', data);
-				document.cookie="myGloriaToken=%22" + token + "%22;path=/";
-				console.log(document.cookie);
+				$cookieStore.put('myGloriaToken', data);
+				$myCookie('myGloriaToken', {
+					value: '%22' + token + '%22',
+					path: '/',
+					expires: 1
+				});
 				
-				//$cookieStore.put('myGloriaUser', username);
-				document.cookie="myGloriaUser=%22" + username + "%22;path=/";
+				$cookieStore.put('myGloriaUser', username);				
+				$myCookie('myGloriaUser', {
+					value: '%22' + username + '%22',
+					path: '/',
+					expires: 1
+				});
 				
 				$gloriaAPI.setCredentials(null, token);
 				authenticated = true;
 			}, function() {
-				alert("Login failed");
 				$cookieStore.remove('myGloriaToken');
+				$myCookie('myGloriaToken', {
+					path: '/',
+					expires: 0
+				});
 				$cookieStore.remove('myGloriaUser');
+				$myCookie('myGloriaUser', {
+					path: '/',
+					expires: 0
+				});
 				authenticated = false;
 			});
 		},
@@ -375,7 +444,15 @@ gloria.factory('Login', function($gloriaAPI, $cookieStore) {
 		},
 		disconnect : function() {
 			$cookieStore.remove('myGloriaToken');
+			$myCookie('myGloriaToken', {
+				path: '/',
+				expires: 0
+			});
 			$cookieStore.remove('myGloriaUser');
+			$myCookie('myGloriaUser', {
+				path: '/',
+				expires: 0
+			});
 			user = null;
 			token = null;
 			authenticated = false;
