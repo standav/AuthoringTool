@@ -1,0 +1,129 @@
+<div ng-controller="WelcomeUserController" style="height: 650px"
+	class="container">
+	<div
+		style="color: white; float: left; margin-right: 0px; width: 56%; padding-bottom: 300px; margin-top: 100px; background-position: center; height: 160px; background-image: url(toolbox/img/back-home.jpg)">
+		<h1
+			style="margin-left: 25px; line-height: 50px; font-size: 50px; margin-top: 30px">
+			Descubre,<br>aprende,<br>investiga,<br>comparte.
+		</h1>
+		<h4 style="margin-top: 185px; margin-left: 25px">GLORIA te abre
+			las puertas del universo.</h4>
+	</div>
+	<div
+		style="position: relative; float: left; margin-left: 0px; width: 44%; padding-bottom: 300px; margin-top: 100px; background-position: center; height: 160px; background-color: #111111">
+
+		<div ng-switch on="option">
+			<div ng-switch-when="register" class="reveal-animation"
+				style="padding-right: 25px">
+				<h2 style="margin-left: 35px; margin-top: 40px">Únete a GLORIA</h2>
+				<div style="margin-left: 35px; margin-top: 35px">
+					<form ng-submit="newUser()">
+						<fieldset>
+							<input style="display: block; width: 60%"
+								ng-model="register.alias" name="username" type="text"
+								placeholder="Usuario" ng-style="register.styles.alias" /> <input
+								style="display: block; width: 88%" ng-model="register.email"
+								name="email" type="text" placeholder="Correo electrónico"
+								ng-style="register.styles.email" />
+							<div style="overflow: hidden">
+								<div style="width: 65%; float: left">
+									<input class="span3" ng-model="register.password"
+										name="password" type="password" placeholder="Contraseña"
+										ng-style="register.styles.password" /> <input class="span3"
+										style="display: block;" ng-model="register.repPassword"
+										name="password" type="password"
+										placeholder="Repetir contraseña"
+										ng-style="register.styles.password" />
+								</div>
+								<label
+									style="color: #D3AF7B; display: inline-block; cursor: default; vertical-align: middle; padding-bottom: 8px; font-size: 85%; width: 35%; line-height: 14px; margin-top: 15px"
+									ng-style="register.styles.password">Al menos 6
+									caracteres, un número y una letra</label>
+							</div>
+
+							<div
+								style="height: 50px; margin-top: 10px; color: #D3AF7B; line-height: 14px; font-size: 85%;">
+								<div class="animate-show" ng-show="register.fault.on">
+									<i class="icon-remove"
+										style="float: left; background-color: rgb(255, 82, 0); margin-right: 5px; margin-top: -1px"></i>
+									<div ng-switch on="register.fault.reason" style="padding-left: 20px">
+										<p ng-switch-when="server">Server error</p>
+										<p ng-switch-when="inv-email">Email address is incorrect</p>
+										<p ng-switch-when="password">Password is not valid</p>
+										<p ng-switch-when="match">Passwords don't match</p>
+										<p ng-switch-when="unknown">Unknown error</p>
+										<p ng-switch-when="alias">Alias is already registered</p>
+										<p ng-switch-when="email">Email is already registered</p>
+									</div>
+								</div>
+								<div class="animate-show" ng-show="register.success">
+									<i class="icon-ok"
+										style="float: left; background-color: #D3AF7B; margin-right: 5px; margin-top: -1px"></i>
+									<p style="padding-left: 20px">Register successful! Check
+										your inbox to activate your account.</p>
+								</div>
+							</div>
+
+							<button class="btn btn-reg" style="width: 50%" type="submit">
+								<strong>Regístrate</strong>
+							</button>
+							<p
+								style="display: block; margin-top: 15px; color: #D3AF7B; line-height: 14px; font-size: 85%;">
+								Al hacer click en el botón, estás manifestando estar de acuerdo
+								con los <a href="#/legal" style="color: #D3AF7B;">términos y
+									condiciones de acceso a GLORIA</a>
+							</p>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+			<div ng-switch-when="reset" style="padding-right: 25px"
+				class="reveal-animation">
+				<h2 style="margin-left: 35px; margin-top: 40px">Reinicia tu
+					cuenta</h2>
+				<div style="margin-left: 35px; margin-top: 35px">
+					<div>
+						<p>Si no recuerdas tu contraseña podemos enviarte una nueva
+							generada aleatoriamente. Lo único que necesitamos es que nos
+							digas cuál es la dirección de correo con la que te registraste en
+							GLORIA.</p>
+						<form ng-submit="resetUser()" style="margin-top: 30px">
+							<fieldset>
+								<input class="span3" ng-model="reset.email" name="email"
+									type="text" placeholder="Correo electrónico"
+									style="float: left; margin-right: 10px"
+									ng-style="reset.styles.email" />
+								<button
+									style="margin-top: 0px; min-height: 0px; font-size: 16px"
+									class="btn btn-reg" type="submit">
+									<strong>Reiniciar</strong>
+								</button>
+
+								<div
+									style="height: 50px; margin-top: 20px; color: #D3AF7B; line-height: 14px; font-size: 85%;">
+									<div class="animate-show" ng-show="reset.fault.on">
+										<i class="icon-remove"
+											style="float: left; background-color: rgb(255, 82, 0); margin-right: 5px; margin-top: -1px"></i>
+										<div ng-switch on="reset.fault.reason"
+											style="padding-left: 20px">
+											<p ng-switch-when="server">Server error</p>
+											<p ng-switch-when="inv-email">Email address is incorrect</p>
+											<p ng-switch-when="unknown">Unknown error</p>
+										</div>
+									</div>
+									<div class="animate-show" ng-show="reset.success">
+										<i class="icon-ok"
+											style="float: left; background-color: #D3AF7B; margin-right: 5px; margin-top: -1px"></i>
+										<p style="padding-left: 20px">Request received! Check your
+											inbox to activate your new password.</p>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>

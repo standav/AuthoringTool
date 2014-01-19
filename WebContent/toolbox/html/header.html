@@ -3,7 +3,7 @@
 	<div class="navbar-inner">
 		<div class="container">
 			<a class="pull-left" style="margin-top: 2px; cursor: pointer;"><img
-				ng-click="gotoHub()" style="margin-left: -8px; height: 36px"
+				ng-click="gotoHub()" style="margin-left: -2px; height: 36px"
 				ng-src="{{imgPath}}/logos/gloria_users_logo.png"></a>
 			<div class="pull-right"
 				style="height: 22px; margin-top: 10px; margin-left: 20px">
@@ -15,20 +15,25 @@
 				<div ng-hide="login.user">
 					<form action="" ng-submit="login.connect()"
 						class="navbar-form pull-right">
-						<div ng-switch on="login.failed">
-							<div ng-switch-when="false">
-
-								<input style="background-color: #E0E0E0; color: #0F0F0F" ng-model="login.email" name="email" class="span2"
-									type="text" placeholder="Email" /> <input style="background-color: #E0E0E0; color: #0F0F0F"
-									ng-model="login.password" class="span2" name="password"
-									type="password" placeholder="Password" />
-								<button class="btn btn-inverse" type="submit">{{'base.login.in'
-									|i18n}}</button>
+						<div>
+							<div style="margin-right: 20px; margin-top: 10px; float: left">
+								<div ng-switch on="login.failed" style="font-size: 85%;">
+									<div ng-switch-when="true">Login failed</div>
+									<div ng-switch-when="false" style="cursor: pointer;">
+										<a ng-click="toggleLoginFace()" style="color: #818181">{{accountOption}}</a>
+									</div>
+								</div>
 							</div>
-							<div ng-switch-when="true"
-								style="margin-right: 30px; margin-top: 10px">
-								<div class="mess-info">Login failed.</div>
-							</div>
+							<input
+								style="background-color: #E0E0E0; color: #0F0F0F; width: 150px"
+								ng-model="login.email" name="email" class="span login-input"
+								type="text" placeholder="Email" ng-style="inputStyle" /> <input
+								style="background-color: #E0E0E0; color: #0F0F0F; margin-right: 8px"
+								ng-model="login.password" class="span2 login-input"
+								name="password" type="password" placeholder="Password"
+								ng-style="inputStyle" />
+							<button class="btn btn-inverse" type="submit">{{'base.login.in'
+								|i18n}}</button>
 						</div>
 					</form>
 				</div>

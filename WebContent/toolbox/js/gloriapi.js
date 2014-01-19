@@ -3,10 +3,9 @@
 var host = 'ws.users.gloria-project.eu';
 var protocol = 'https';
 var port = '8443';
-/*
-var host = 'localhost';
-var protocol = 'http';
-var port = '8080';*/
+
+  //var host = 'localhost'; var protocol = 'http'; var port = '8080';
+ 
 
 /* App Module */
 var gloria = angular.module('gloria.api', []);
@@ -15,30 +14,38 @@ gloria.config([ '$httpProvider', function($httpProvider) {
 	$httpProvider.defaults.useXDomain = true;
 } ]);
 
-gloria.factory('HttpWrapper', function($http, $cookies) {
-	var authorization = null;
-	var wrapper = {
-		setAuthorization : function(auth) {
-			authorization = auth;
-		},
-		http : function(options) {
-			if (authorization) {
+gloria.factory('HttpWrapper',
+		function($http, $cookies) {
+			var authorization = null;
+			var wrapper = {
+				setAuthorization : function(username, password) {
+					authorization = 'Basic '
+							+ Base64.encode(username + ':' + password);
+				},
+				resetAuthorization : function() {
+					authorization = null;
+				},
+				http : function(options) {
+					options.url = protocol + '://' + host + ':' + port + '/'
+							+ options.url;
+					options.headers = options.headers || {};
 
-				options.url = protocol + '://' + host + ':' + port + '/'
-						+ options.url;
-				options.headers = options.headers || {};
-				options.headers.authorization = authorization;
-			}
+					if (authorization) {
+						options.headers.authorization = authorization;
+					} else {
+						options.headers.authorization = 'Basic '
+								+ Base64.encode('public:public');
+					}
 
-			return $http(options);
-		},
-		getAuthorization : function() {
-			return authorization;
-		}
-	};
+					return $http(options);
+				},
+				getAuthorization : function() {
+					return authorization;
+				}
+			};
 
-	return wrapper;
-});
+			return wrapper;
+		});
 
 gloria.factory('$sequenceFactory', function($q) {
 
@@ -163,12 +170,11 @@ function GloriaApiHandler(HttpWrapper, $q) {
 
 	/* User authentication */
 	this.setCredentials = function(username, password) {
-		this.httpWrapper.setAuthorization('Basic '
-				+ Base64.encode(username + ':' + password));
+		this.httpWrapper.setAuthorization(username, password);
 	};
 
 	this.clearCredentials = function() {
-		this.httpWrapper.setAuthorization(null);
+		this.httpWrapper.resetAuthorization();
 	};
 
 	this.authenticate = function(success, error, unauthorized) {
@@ -177,18 +183,48 @@ function GloriaApiHandler(HttpWrapper, $q) {
 				success, error, unauthorized);
 	};
 
-	this.verifyToken = function(success, error, unauthorized) {
+	this.verifyToken = function(success, error) {
 
 		return this.processRequest('get',
 				'GLORIAAPI/users/authenticate?verify=true', null, success,
 				error);
 	};
-	
+
 	this.getUserInformation = function(success, error, unauthorized) {
 
-		return this.processRequest('get',
-				'GLORIAAPI/users/info', null, success,
-				error);
+		return this.processRequest('get', 'GLORIAAPI/users/info', null,
+				success, error, unauthorized);
+	};
+
+	this.registerUser = function(alias, email, password, success, error,
+			unauthorized) {
+
+		return this.processRequest('post', 'GLORIAAPI/users/register', {
+			alias : alias,
+			email : email,
+			password : password
+
+		}, success, error, unauthorized);
+	};
+
+	this.resetPassword = function(email, success, error, unauthorized) {
+
+		return this.processRequest('post', 'GLORIAAPI/users/reset', {
+			email : email
+		}, success, error, unauthorized);
+	};
+
+	this.changePassword = function(password, success, error, unauthorized) {
+
+		return this.processRequest('post', 'GLORIAAPI/users/update', {
+			password : password
+		}, success, error, unauthorized);
+	};
+
+	this.deactivateUser = function(password, success, error, unauthorized) {
+
+		return this.processRequest('get', 'GLORIAAPI/users/deactivate', null,
+				success, error, unauthorized);
 	};
 
 	/* Experiment reservations management */
@@ -326,10 +362,10 @@ function GloriaApiHandler(HttpWrapper, $q) {
 	};
 
 	this.getRandomImages = function(count, success, error, unauthorized) {
-		return this.processRequest('get', 'GLORIAAPI/images/random/'
-				+ count, null, success, error, unauthorized);
+		return this.processRequest('get', 'GLORIAAPI/images/random/' + count,
+				null, success, error, unauthorized);
 	};
-	
+
 	this.getImagesByDate = function(year, month, day, success, error,
 			unauthorized) {
 		return this.processRequest('get', 'GLORIAAPI/images/list/' + year + '/'
@@ -339,64 +375,72 @@ function GloriaApiHandler(HttpWrapper, $q) {
 }
 
 gloria.factory('$myCookie', function() {
-    function fetchValue(name) {
-        var aCookie = document.cookie.split("; ");
-	    for (var i=0; i < aCookie.length; i++)
-	    {
-	        // a name/value pair (a crumb) is separated by an equal sign
-	        var aCrumb = aCookie[i].split("=");
-	        if (name === aCrumb[0])
-	        {
-                var value = '';
-                try {
-                    value = angular.fromJson(aCrumb[1]);
-                } catch(e) {
-	                value = unescape(aCrumb[1]);
-                }
-                return value;
-	        }
-	    }
-	    // a cookie with the requested name does not exist
-	    return null;
-    }
-    return function(name, options) {
-        if(arguments.length === 1) return fetchValue(name);
-        var cookie = name + '=';
-        if(typeof options === 'object') {
-            var expires = '';
-            cookie += (typeof options.value === 'object') ? angular.toJson(options.value) + ';' : options.value + ';';
-            if(options.expires) {
-                var date = new Date();
-                date.setTime( date.getTime() + (options.expires * 24 *60 * 60 * 1000));
-			    expires = date.toGMTString();
-            }
-            cookie += (!options.session) ? 'expires=' + expires + ';' : '';
-            cookie += (options.path) ? 'path=' + options.path + ';' : '';
-            cookie += (options.secure) ? 'secure;' : '';
-        } else {
-            cookie += options + ';';
-        }
-         document.cookie = cookie;
-    };
+	function fetchValue(name) {
+		var aCookie = document.cookie.split("; ");
+		for (var i = 0; i < aCookie.length; i++) {
+			// a name/value pair (a crumb) is separated by an equal sign
+			var aCrumb = aCookie[i].split("=");
+			if (name === aCrumb[0]) {
+				var value = '';
+				try {
+					value = angular.fromJson(aCrumb[1]);
+				} catch (e) {
+					value = unescape(aCrumb[1]);
+				}
+
+				if (value == 'undefined')
+					return undefined;
+				else if (value == 'null')
+					return null;
+
+				return value;
+			}
+		}
+		// a cookie with the requested name does not exist
+		return null;
+	}
+	return function(name, options) {
+		if (arguments.length === 1)
+			return fetchValue(name);
+		var cookie = name + '=';
+		if (typeof options === 'object') {
+			var expires = '';
+			cookie += (typeof options.value === 'object') ? angular
+					.toJson(options.value)
+					+ ';' : options.value + ';';
+			if (options.expires) {
+				var date = new Date();
+				date.setTime(date.getTime()
+						+ (options.expires * 24 * 60 * 60 * 1000));
+				expires = date.toGMTString();
+			}
+			cookie += (!options.session) ? 'expires=' + expires + ';' : '';
+			cookie += (options.path) ? 'path=' + options.path + ';' : '';
+			cookie += (options.secure) ? 'secure;' : '';
+		} else {
+			cookie += options + ';';
+		}
+		document.cookie = cookie;
+	};
 });
 
 gloria.factory('Login', function($gloriaAPI, $cookieStore, $myCookie) {
 
-	//var token = $cookieStore.get('myGloriaToken');
-	//var user = $cookieStore.get('myGloriaUser');
+	// var token = $cookieStore.get('myGloriaToken');
+	// var user = $cookieStore.get('myGloriaUser');
 	var token = $myCookie('myGloriaToken');
 	var reg = new RegExp('"', 'g');
-	
+
 	if (token != null && token != undefined) {
-		token = token.replace(reg, '');			
+		token = token.replace(reg, '');
 	}
-	
+
 	var user = $myCookie('myGloriaUser');
-	
+
 	if (user != null && user != undefined) {
 		user = user.replace(reg, '');
-	}	
-	
+	}
+
 	var authenticated = false;
 
 	return {
@@ -408,31 +452,32 @@ gloria.factory('Login', function($gloriaAPI, $cookieStore, $myCookie) {
 				token = data;
 				$cookieStore.put('myGloriaToken', data);
 				$myCookie('myGloriaToken', {
-					value: '%22' + token + '%22',
-					path: '/',
-					expires: 1
+					value : '%22' + token + '%22',
+					path : '/',
+					expires : 1
 				});
-				
-				$cookieStore.put('myGloriaUser', username);				
+
+				$cookieStore.put('myGloriaUser', username);
 				$myCookie('myGloriaUser', {
-					value: '%22' + username + '%22',
-					path: '/',
-					expires: 1
+					value : '%22' + username + '%22',
+					path : '/',
+					expires : 1
 				});
-				
+
 				$gloriaAPI.setCredentials(null, token);
 				authenticated = true;
 			}, function() {
 				$cookieStore.remove('myGloriaToken');
 				$myCookie('myGloriaToken', {
-					path: '/',
-					expires: 0
+					path : '/',
+					expires : 0
 				});
 				$cookieStore.remove('myGloriaUser');
 				$myCookie('myGloriaUser', {
-					path: '/',
-					expires: 0
+					path : '/',
+					expires : 0
 				});
+				$gloriaAPI.clearCredentials();
 				authenticated = false;
 			});
 		},
@@ -445,13 +490,13 @@ gloria.factory('Login', function($gloriaAPI, $cookieStore, $myCookie) {
 		disconnect : function() {
 			$cookieStore.remove('myGloriaToken');
 			$myCookie('myGloriaToken', {
-				path: '/',
-				expires: 0
+				path : '/',
+				expires : 0
 			});
 			$cookieStore.remove('myGloriaUser');
 			$myCookie('myGloriaUser', {
-				path: '/',
-				expires: 0
+				path : '/',
+				expires : 0
 			});
 			user = null;
 			token = null;
@@ -480,6 +525,18 @@ gloria.factory('Login', function($gloriaAPI, $cookieStore, $myCookie) {
 				}
 			}
 
+		},
+		registerUser : function(alias, email, password, success, error) {
+			return $gloriaAPI.registerUser(alias, email, password, success,
+					error);
+		},
+		resetPassword : function(email, success, error) {
+			return $gloriaAPI.resetPassword(email, success, error);
+		},
+		changePassword : function(password, success, error) {
+			return $gloriaAPI.resetPassword(password, success, error);
+
+			// do more things here (update)
 		}
 	};
 });

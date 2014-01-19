@@ -279,6 +279,15 @@ v.service('$gloriaView', function($http) {
 
 			return '/';
 		},
+		getWelcomeView : function(path) {
+			for ( var key in views) {
+				if (views[key].type == 'welcome') {
+					return views[key];
+				}
+			}
+
+			return '/';
+		},
 		getViews : function() {
 			return views;
 		}
@@ -462,12 +471,17 @@ toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
 				$rootScope.headerHtml = $rootScope.htmlPath + '/header.html';
 				$rootScope.footerHtml = $rootScope.htmlPath + '/footer.html';
 				$rootScope.bodyHtml = $rootScope.htmlPath + '/body.html';
-
-				if ($gloriaEnv.getOption('navbar')) {
-					$rootScope.navbarHtml = $rootScope.htmlPath
-							+ '/navbar.html';
-				}
 			}
+
+			if ($gloriaEnv.getOption('navbar')) {
+				$rootScope.navbarHtml = $rootScope.htmlPath + '/navbar.html';
+			}
+
+			/*
+			 * var welcomePage = $gloriaEnv.getOption('welcomePage'); if
+			 * (welcomePage != undefined) { $rootScope.welcomeHtml =
+			 * welcomePage.html; }
+			 */
 
 			$rootScope.titleLoaded = true;
 			$rootScope.toolboxReady = true;
@@ -481,6 +495,9 @@ toolbox.controller('MainController', function($scope, $http, $window,
 		$location, $gloriaLocale, $gloriaEnv) {
 
 	$scope.ready = false;
+	$scope.wrapperStyle = {
+		height : '650px'
+	};
 
 	$scope.gotoHub = function() {
 		if ($scope.hubref != undefined) {
@@ -518,15 +535,41 @@ toolbox.controller('LoginController', function($scope, $location, Login,
 	$scope.verified = false;
 	$scope.login.failed = false;
 
-	Login.verifyToken(function() {
-		$scope.login.user = Login.getUser();
-		$scope.verified = true;
-	}, function() {
-		$scope.verified = true;
-	});
+	$scope.option = 'register';
+	$scope.accountOption = "Forgot your password?";
+
+	$scope.toggleLoginFace = function() {
+		if ($scope.option == 'register') {
+			$scope.accountOption = "Create an account";
+			$scope.option = 'reset';
+		} else {
+			$scope.accountOption = "Forgot your password?";
+			$scope.option = 'register';
+		}
+	};
+
+	$scope.inputStyle = {};
 
 	$scope.gotoMain = function() {
 		$location.path($gloriaView.getMainView().path);
+	};
+
+	$scope.gotoWelcome = function() {
+		$location.path($gloriaView.getWelcomeView().path);
+	};
+
+	$scope.canBeShown = function() {
+		var view = $gloriaView.getViewInfoByPath($location.path());
+		if ($scope.login.user != null) {
+			var go = view.visibility != 'only-public';
+			if (!go) {
+				$scope.gotoMain();
+			}
+
+			return go;
+		}
+
+		return view.visibility == "public" || view.visibility == "only-public";
 	};
 
 	$scope.login.connect = function() {
@@ -536,21 +579,27 @@ toolbox.controller('LoginController', function($scope, $location, Login,
 					function() {
 						$scope.login.user = $scope.login.email;
 						$scope.gotoMain();
-					},
-					function() {
+					}, function(data) {
+						$scope.login.user = null;
 						$scope.login.failed = true;
-						$scope.login.timer = $timeout($scope.login.timeout,
-								1500);
+						$scope.inputStyle.borderColor = 'rgb(255, 82, 0)';
 					});
 		}
 	};
 
-	$scope.login.timeout = function() {
-		$scope.login.failed = false;
-		$scope.login.user = null;
-		$scope.login.email = null;
-		$scope.login.password = null;
-	};
+	$scope.$watch('login.email', function() {
+		if ($scope.login.failed) {
+			$scope.login.failed = false;
+			$scope.inputStyle.borderColor = undefined;
+		}
+	});
+
+	$scope.$watch('login.password', function() {
+		if ($scope.login.failed) {
+			$scope.login.failed = false;
+			$scope.inputStyle.borderColor = undefined;
+		}
+	});
 
 	$scope.login.disconnect = function() {
 		Login.disconnect();
@@ -558,7 +607,7 @@ toolbox.controller('LoginController', function($scope, $location, Login,
 		$scope.login.email = null;
 		$scope.login.password = null;
 		document.execCommand("ClearAuthenticationCache");
-		$scope.gotoMain();
+		$scope.gotoWelcome();
 	};
 
 	$scope.$on('unauthorized', function() {
@@ -573,6 +622,15 @@ toolbox.controller('LoginController', function($scope, $location, Login,
 
 	$scope.$on('$destroy', function() {
 		$timeout.cancel($scope.login.timer);
+	});
+
+	Login.verifyToken(function() {
+		$scope.login.user = Login.getUser();
+		$scope.verified = true;
+		$scope.gotoMain();
+	}, function() {
+		$scope.verified = true;
+		$scope.gotoWelcome();
 	});
 });
 
