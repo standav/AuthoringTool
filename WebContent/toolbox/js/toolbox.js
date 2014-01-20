@@ -55,7 +55,10 @@ locale.service('$gloriaLocale',
 					$http({
 						method : "GET",
 						url : url,
-						cache : false
+						cache : false,
+						headers : {
+							Accept : 'application/vnd.github.3.raw'
+						}
 					}).success(function(data) {
 						$locale.dictionary[name] = data;
 						if (then != undefined) {
@@ -66,7 +69,10 @@ locale.service('$gloriaLocale',
 						$http({
 							method : "GET",
 							url : url,
-							cache : false
+							cache : false,
+							headers : {
+								Accept : 'application/vnd.github.3.raw'
+							}
 						}).success(function(data) {
 							$locale.dictionary[name] = data;
 						}).error(function() {
@@ -80,7 +86,10 @@ locale.service('$gloriaLocale',
 					$http({
 						method : "GET",
 						url : url,
-						cache : false
+						cache : false,
+						headers : {
+							Accept : 'application/vnd.github.3.raw'
+						}
 					}).success(function(data) {
 						$locale.DATETIME_FORMATS = data.DATETIME_FORMATS;
 						$locale.NUMBER_FORMATS = data.NUMBER_FORMATS;
@@ -93,7 +102,10 @@ locale.service('$gloriaLocale',
 						$http({
 							method : "GET",
 							url : url,
-							cache : false
+							cache : false,
+							headers : {
+								Accept : 'application/vnd.github.3.raw'
+							}
 						}).success(function(data) {
 							$locale.DATETIME_FORMATS = data.DATETIME_FORMATS;
 							$locale.NUMBER_FORMATS = data.NUMBER_FORMATS;

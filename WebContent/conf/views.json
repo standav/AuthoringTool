@@ -30,12 +30,5 @@
 		"path": "/legal",
 		"html": "toolbox/html/legal.html",
 		"js": []
-	},
-	"welcome": {
-		"visibility": "only-public",
-		"type": "welcome",
-		"path": "/welcome",
-		"html": "templates/welcome/content.html",
-		"js": ["templates/welcome/welcome.js"]
 	}
 }
