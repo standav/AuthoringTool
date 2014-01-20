@@ -280,7 +280,7 @@ v.service('$gloriaView', function($http) {
 				}
 			}
 
-			return '/';
+			return undefined;
 		},
 		getMainView : function(path) {
 			for ( var key in views) {
@@ -289,7 +289,7 @@ v.service('$gloriaView', function($http) {
 				}
 			}
 
-			return '/';
+			return undefined;
 		},
 		getWelcomeView : function(path) {
 			for ( var key in views) {
@@ -298,7 +298,7 @@ v.service('$gloriaView', function($http) {
 				}
 			}
 
-			return '/';
+			return undefined;
 		},
 		getViews : function() {
 			return views;
@@ -567,21 +567,40 @@ toolbox.controller('LoginController', function($scope, $location, Login,
 	};
 
 	$scope.gotoWelcome = function() {
-		$location.path($gloriaView.getWelcomeView().path);
+		var welcome = $gloriaView.getWelcomeView();
+		if (welcome != undefined) {
+			$location.path(welcome.path);
+		} else {
+		
+			var wrong = $gloriaView.getWrongPathView();
+			
+			if (wrong != undefined) {
+				$location.path(wrong.path);
+			} else {
+				alert('no welcome view');
+			}
+		}		
 	};
 
 	$scope.canBeShown = function() {
 		var view = $gloriaView.getViewInfoByPath($location.path());
+		var go;
+		
 		if ($scope.login.user != null) {
-			var go = view.visibility != 'only-public';
-			if (!go) {
-				$scope.gotoMain();
+			go = view.visibility != 'only-public';
+			if (!go) {				
+				$scope.gotoWelcome();
 			}
 
 			return go;
 		}
 
-		return view.visibility == "public" || view.visibility == "only-public";
+		go = view.visibility == "public" || view.visibility == "only-public";
+		
+		return go;
+		/*if (!go) {				
+			$scope.gotoWelcome();
+		}*/
 	};
 
 	$scope.login.connect = function() {

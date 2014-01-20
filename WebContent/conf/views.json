@@ -15,6 +15,7 @@
 	},
 	"wrong": {
 		"type": "wrong-path",
+		"visibility": "public",
 		"path": "/wrong",
 		"html": "toolbox/html/wrong.html",
 		"js": []		
