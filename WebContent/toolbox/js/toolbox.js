@@ -639,7 +639,7 @@ toolbox.controller('LoginController', function($scope, $location, Login,
 	Login.verifyToken(function() {
 		$scope.login.user = Login.getUser();
 		$scope.verified = true;
-		$scope.gotoMain();
+		//$scope.gotoMain();
 	}, function() {
 		$scope.verified = true;
 		$scope.gotoWelcome();

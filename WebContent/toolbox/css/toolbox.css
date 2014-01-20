@@ -26,7 +26,7 @@ html,body {
 .page-wrap {
   min-height: 100%;
   /* equal to footer height */
-  /*margin-bottom: -285px;*/ 
+ /* margin-bottom: -285px;*/ 
 }
 .page-wrap:after {
   content: "";
