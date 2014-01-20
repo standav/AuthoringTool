@@ -6,8 +6,8 @@
 			<div ng-include src="navbarHtml"></div>
 		</div>
 		<div ng-if="headerReady && navReady && verified && canBeShown()"
-			id="body" class="container view-wrapper" ng-style="wrapperStyle">
-			<div ng-view class="reveal-animation"></div>
+			id="body" class="container">
+			<div ng-view></div>
 		</div>
 	</div>
 	<div ng-if="headerReady && navReady" style="position: relative">
