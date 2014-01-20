@@ -571,36 +571,38 @@ toolbox.controller('LoginController', function($scope, $location, Login,
 		if (welcome != undefined) {
 			$location.path(welcome.path);
 		} else {
-		
+
 			var wrong = $gloriaView.getWrongPathView();
-			
+
 			if (wrong != undefined) {
 				$location.path(wrong.path);
 			} else {
 				alert('no welcome view');
 			}
-		}		
+		}
 	};
 
 	$scope.canBeShown = function() {
 		var view = $gloriaView.getViewInfoByPath($location.path());
-		var go;
-		
-		if ($scope.login.user != null) {
-			go = view.visibility != 'only-public';
-			if (!go) {				
-				$scope.gotoWelcome();
+		var go = false;
+
+		if (view != undefined) {
+			if ($scope.login.user != null) {
+				go = view.visibility != 'only-public';
+				if (!go) {
+					$scope.gotoWelcome();
+				}
+
+				return go;
 			}
+
+			go = view.visibility == "public"
+					|| view.visibility == "only-public";
 
 			return go;
 		}
-
-		go = view.visibility == "public" || view.visibility == "only-public";
 		
-		return go;
-		/*if (!go) {				
-			$scope.gotoWelcome();
-		}*/
+		$scope.gotoWelcome();
 	};
 
 	$scope.login.connect = function() {
@@ -658,7 +660,7 @@ toolbox.controller('LoginController', function($scope, $location, Login,
 	Login.verifyToken(function() {
 		$scope.login.user = Login.getUser();
 		$scope.verified = true;
-		//$scope.gotoMain();
+		// $scope.gotoMain();
 	}, function() {
 		$scope.verified = true;
 		$scope.gotoWelcome();
