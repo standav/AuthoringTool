@@ -470,6 +470,10 @@ toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
 				$rootScope.hubref = $gloriaEnv.getOption('hubref');
 			}
 
+			if ($gloriaEnv.getOption('wref') != undefined) {
+				$rootScope.wref = $gloriaEnv.getOption('wref');
+			}
+
 			var basePath = $gloriaEnv.getOption('basePath');
 
 			if (basePath != undefined) {
@@ -489,12 +493,6 @@ toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
 				$rootScope.navbarHtml = $rootScope.htmlPath + '/navbar.html';
 			}
 
-			/*
-			 * var welcomePage = $gloriaEnv.getOption('welcomePage'); if
-			 * (welcomePage != undefined) { $rootScope.welcomeHtml =
-			 * welcomePage.html; }
-			 */
-
 			$rootScope.titleLoaded = true;
 			$rootScope.toolboxReady = true;
 		});
@@ -504,7 +502,7 @@ toolbox.run(function($gloriaLocale, $gloriaEnv, $rootScope) {
 });
 
 toolbox.controller('MainController', function($scope, $http, $window,
-		$location, $gloriaLocale, $gloriaEnv) {
+		$location, $gloriaLocale, $gloriaEnv, $gloriaView) {
 
 	$scope.ready = false;
 	$scope.wrapperStyle = {
@@ -536,6 +534,49 @@ toolbox.controller('MainController', function($scope, $http, $window,
 			}
 		}
 	};
+
+	$scope.gotoMain = function() {
+		$location.path($gloriaView.getMainView().path);
+	};
+
+	$scope.gotoWelcome = function() {
+
+		if ($scope.wref != undefined) {
+			if ($scope.wref.app != undefined) {
+
+				var url = $window.location.origin;
+				if (url == undefined) {
+					url = $window.location.protocol + "//"
+							+ $window.location.host;
+				}
+				if ($scope.wref.app.length > 0) {
+					url += '/';
+				}
+				url += $scope.wref.app + '/#';
+				if ($scope.wref.path != undefined) {
+					url += $scope.wref.path;
+				}
+				$window.location.href = url;
+			} else if ($scope.wref.url != undefined) {
+				$window.location.href = $scope.wref.url;
+			} else if ($scope.wref.path != undefined) {
+				$location.path($scope.wref.path);
+			}
+		} else {
+			var welcome = $gloriaView.getWelcomeView();
+			if (welcome != undefined) {
+				$location.path(welcome.path);
+			} else {
+				var wrong = $gloriaView.getWrongPathView();
+
+				if (wrong != undefined) {
+					$location.path(wrong.path);
+				} else {
+					alert('no welcome view');
+				}
+			}
+		}
+	};
 });
 
 toolbox.controller('LoginController', function($scope, $location, Login,
@@ -562,26 +603,6 @@ toolbox.controller('LoginController', function($scope, $location, Login,
 
 	$scope.inputStyle = {};
 
-	$scope.gotoMain = function() {
-		$location.path($gloriaView.getMainView().path);
-	};
-
-	$scope.gotoWelcome = function() {
-		var welcome = $gloriaView.getWelcomeView();
-		if (welcome != undefined) {
-			$location.path(welcome.path);
-		} else {
-
-			var wrong = $gloriaView.getWrongPathView();
-
-			if (wrong != undefined) {
-				$location.path(wrong.path);
-			} else {
-				alert('no welcome view');
-			}
-		}
-	};
-
 	$scope.canBeShown = function() {
 		var view = $gloriaView.getViewInfoByPath($location.path());
 		var go = false;
@@ -601,7 +622,7 @@ toolbox.controller('LoginController', function($scope, $location, Login,
 
 			return go;
 		}
-		
+
 		$scope.gotoWelcome();
 	};
 
