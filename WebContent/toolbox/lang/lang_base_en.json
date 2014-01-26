@@ -2,7 +2,12 @@
 	"login" : {
 		"in" : "Login",
 		"out": "Logout",
-		"welcome": "Welcome"
+		"welcome": "Welcome",
+		"failed": "Login failed",
+		"forgot": "Forgot your password?",
+		"new": "I don't have an account",
+		"email": "Email",
+		"password": "Password"
 	},
 	"footer" : {
 		"ack" : {
@@ -25,9 +30,7 @@
 				}
 			},
 			"author": {			
-				"pre": "GLORIA Authoring Tool and the GLORIA services platform have been developed by Fernando Serena",
-				"email": "fserena@ciclope.info",
-				"post": " and are hosted in "
+				"pre": "GLORIA Authoring Tool and the GLORIA services platform have been developed by @{p1}@ and are hosted in"
 			},
 			"flags": "All flag images are obtained from "
 		}

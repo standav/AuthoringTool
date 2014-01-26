@@ -18,9 +18,9 @@
 						<div>
 							<div style="margin-right: 20px; margin-top: 10px; float: left">
 								<div ng-switch on="login.failed" style="font-size: 85%;">
-									<div ng-switch-when="true">Login failed</div>
+									<div ng-switch-when="true">{{'base.login.failed'|i18n}}</div>
 									<div ng-switch-when="false" style="cursor: pointer;">
-										<a ng-click="toggleLoginFace()" style="color: #818181">{{accountOption}}</a>
+										<a ng-click="toggleLoginFace()" style="color: #818181">{{accountOption |i18n}}</a>
 									</div>
 								</div>
 							</div>
@@ -30,7 +30,7 @@
 								type="text" placeholder="Email" ng-style="inputStyle" /> <input
 								style="background-color: #E0E0E0; color: #0F0F0F; margin-right: 8px"
 								ng-model="login.password" class="span2 login-input"
-								name="password" type="password" placeholder="Password"
+								name="password" type="password" placeholder="{{'base.login.password'|i18n}}"
 								ng-style="inputStyle" />
 							<button class="btn btn-inverse" type="submit">{{'base.login.in'
 								|i18n}}</button>

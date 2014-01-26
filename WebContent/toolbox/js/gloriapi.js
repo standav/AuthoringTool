@@ -3,9 +3,10 @@
 var host = 'ws.users.gloria-project.eu';
 var protocol = 'https';
 var port = '8443';
-
-  //var host = 'localhost'; var protocol = 'http'; var port = '8080';
- 
+/*
+var host = 'localhost';
+var protocol = 'http';
+var port = '8080';*/
 
 /* App Module */
 var gloria = angular.module('gloria.api', []);
@@ -362,8 +363,13 @@ function GloriaApiHandler(HttpWrapper, $q) {
 	};
 
 	this.getRandomImages = function(count, success, error, unauthorized) {
-		return this.processRequest('get', 'GLORIAAPI/images/random/' + count,
-				null, success, error, unauthorized);
+		return this.processRequest('get', 'GLORIAAPI/images/random/all/'
+				+ count, null, success, error, unauthorized);
+	};
+
+	this.getMyRandomImages = function(count, success, error, unauthorized) {
+		return this.processRequest('get', 'GLORIAAPI/images/random/mine/'
+				+ count, null, success, error, unauthorized);
 	};
 
 	this.getImagesByDate = function(year, month, day, success, error,

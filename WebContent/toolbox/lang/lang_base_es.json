@@ -2,7 +2,12 @@
 	"login" : {
 		"in" : "Entrar",
 		"out": "Salir",
-		"welcome": "Bienvenido"
+		"welcome": "Bienvenido",
+		"failed": "Usuario no válido",
+		"forgot": "¿Olvidaste tu contraseña?",
+		"new": "No tengo una cuenta",
+		"email": "Email",
+		"password": "Contraseña"
 	},
 	"footer" : {
 		"ack" : {
@@ -24,11 +29,7 @@
 					"other": "especifique"
 				}
 			},
-			"author": {
-				"pre": "GLORIA Authoring Tool y la plataforma de servicios de GLORIA han sido desarrollados por Fernando Serena",
-				"email": "fserena@ciclope.info",
-				"post": " y son mantenidos en "
-			},
+			"author": "GLORIA Authoring Tool y la plataforma de servicios de GLORIA han sido desarrollados por @{p1}@ y son mantenidos en ",
 			"flags": "Todas las imágenes de banderas han sido obtenidas desde "
 		}
 	}

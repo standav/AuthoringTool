@@ -18,118 +18,131 @@ locale.controller('LocaleController', function($scope, $sce, $gloriaLocale,
 	};
 });
 
-locale.service('$gloriaLocale',
-		function($locale, $http, $window, $cookieStore) {
+locale.service('$gloriaLocale', function($locale, $http, $window, $myCookie,
+		$cookieStore) {
 
-			var languages = [ 'en', 'es', 'it', 'pl', 'cz', 'ru' ];
+	var languages = [ 'en', 'es', 'it', 'pl', 'cz', 'ru' ];
 
-			$locale.dictionary = {};
-			locale.preferredLang = $cookieStore.get('preferredLang');
-			if (locale.preferredLang == undefined) {
-				locale.preferredLang = $window.navigator.userLanguage
-						|| $window.navigator.language || 'en';
+	$locale.dictionary = {};
+	var langCookie = $myCookie('preferredLang');
 
-				var languageParts = locale.preferredLang.split("-");
-				locale.preferredLang = languageParts[0];
-			}
+	var reg = new RegExp('"', 'g');
 
-			$locale.id = locale.preferredLang;
+	if (langCookie != null && langCookie != undefined) {
+		langCookie = langCookie.replace(reg, '');
+	}
 
-			var gLocale = {
+	locale.preferredLang = langCookie;
 
-				getLanguages : function() {
-					return languages;
-				},
-				getDictionary : function() {
-					return $locale.dictionary;
-				},
-				getLocale : function() {
-					return $locale;
-				},
-				getLanguage : function() {
-					return $locale.id;
-				},
-				loadResource : function(path, name, then) {
-					var url = path + '/lang_' + name + '_' + $locale.id
-							+ '.json';
-					$http({
-						method : "GET",
-						url : url,
-						cache : false,
-						headers : {
-							Accept : 'application/vnd.github.3.raw'
-						}
-					}).success(function(data) {
-						$locale.dictionary[name] = data;
-						if (then != undefined) {
-							then();
-						}
-					}).error(function() {
-						var url = path + '/lang_' + name + '_en.json';
-						$http({
-							method : "GET",
-							url : url,
-							cache : false,
-							headers : {
-								Accept : 'application/vnd.github.3.raw'
-							}
-						}).success(function(data) {
-							$locale.dictionary[name] = data;
-						}).error(function() {
-							alert("Locale resource problem: " + name);
-						});
+	if (locale.preferredLang == undefined) {
+		locale.preferredLang = $window.navigator.userLanguage
+				|| $window.navigator.language || 'en';
 
-					});
-				},
-				loadCore : function(path, lang, post) {
-					var url = path + '/lang_core_' + lang + '.json';
-					$http({
-						method : "GET",
-						url : url,
-						cache : false,
-						headers : {
-							Accept : 'application/vnd.github.3.raw'
-						}
-					}).success(function(data) {
-						$locale.DATETIME_FORMATS = data.DATETIME_FORMATS;
-						$locale.NUMBER_FORMATS = data.NUMBER_FORMATS;
-						$locale.id = data.id;
-						if (post != undefined) {
-							post();
-						}
-					}).error(function() {
-						var url = path + '/lang_core_en.json';
-						$http({
-							method : "GET",
-							url : url,
-							cache : false,
-							headers : {
-								Accept : 'application/vnd.github.3.raw'
-							}
-						}).success(function(data) {
-							$locale.DATETIME_FORMATS = data.DATETIME_FORMATS;
-							$locale.NUMBER_FORMATS = data.NUMBER_FORMATS;
-							$locale.id = data.id;
-							if (post != undefined) {
-								post();
-							}
-						}).error(function() {
-							alert("Locale core problem!");
-						});
+		var languageParts = locale.preferredLang.split("-");
+		locale.preferredLang = languageParts[0];
+	}
 
-					});
-				},
-				getPreferredLanguage : function() {
-					return locale.preferredLang;
-				},
-				setPreferredLanguage : function(lang) {
-					locale.preferredLang = lang;
-					$cookieStore.put('preferredLang', lang);
+	$locale.id = locale.preferredLang;
+
+	var gLocale = {
+
+		getLanguages : function() {
+			return languages;
+		},
+		getDictionary : function() {
+			return $locale.dictionary;
+		},
+		getLocale : function() {
+			return $locale;
+		},
+		getLanguage : function() {
+			return $locale.id;
+		},
+		loadResource : function(path, name, then) {
+			var url = path + '/lang_' + name + '_' + $locale.id + '.json';
+			$http({
+				method : "GET",
+				url : url,
+				cache : false,
+				headers : {
+					Accept : 'application/vnd.github.3.raw'
 				}
-			};
+			}).success(function(data) {
+				$locale.dictionary[name] = data;
+				if (then != undefined) {
+					then();
+				}
+			}).error(function() {
+				var url = path + '/lang_' + name + '_en.json';
+				$http({
+					method : "GET",
+					url : url,
+					cache : false,
+					headers : {
+						Accept : 'application/vnd.github.3.raw'
+					}
+				}).success(function(data) {
+					$locale.dictionary[name] = data;
+				}).error(function() {
+					alert("Locale resource problem: " + name);
+				});
 
-			return gLocale;
-		});
+			});
+		},
+		loadCore : function(path, lang, post) {
+			var url = path + '/lang_core_' + lang + '.json';
+			$http({
+				method : "GET",
+				url : url,
+				cache : false,
+				headers : {
+					Accept : 'application/vnd.github.3.raw'
+				}
+			}).success(function(data) {
+				$locale.DATETIME_FORMATS = data.DATETIME_FORMATS;
+				$locale.NUMBER_FORMATS = data.NUMBER_FORMATS;
+				$locale.id = data.id;
+				if (post != undefined) {
+					post();
+				}
+			}).error(function() {
+				var url = path + '/lang_core_en.json';
+				$http({
+					method : "GET",
+					url : url,
+					cache : false,
+					headers : {
+						Accept : 'application/vnd.github.3.raw'
+					}
+				}).success(function(data) {
+					$locale.DATETIME_FORMATS = data.DATETIME_FORMATS;
+					$locale.NUMBER_FORMATS = data.NUMBER_FORMATS;
+					$locale.id = data.id;
+					if (post != undefined) {
+						post();
+					}
+				}).error(function() {
+					alert("Locale core problem!");
+				});
+
+			});
+		},
+		getPreferredLanguage : function() {
+			return locale.preferredLang;
+		},
+		setPreferredLanguage : function(lang) {
+			locale.preferredLang = lang;
+			$cookieStore.put('preferredLang', lang);
+			$myCookie('preferredLang', {
+				value : '%22' + lang + '%22',
+				path : '/',
+				expires : 1
+			});
+		}
+	};
+
+	return gLocale;
+});
 
 locale.run(function($gloriaEnv, $gloriaLocale, $rootScope) {
 	$rootScope.headerReady = false;
@@ -146,7 +159,7 @@ locale.run(function($gloriaEnv, $gloriaLocale, $rootScope) {
 });
 
 locale.filter('i18n', function($gloriaLocale) {
-	return function(key, p) {
+	return function(key, p1, p2, p3) {
 
 		var dictionary = $gloriaLocale.getDictionary();
 
@@ -162,8 +175,15 @@ locale.filter('i18n', function($gloriaLocale) {
 
 		if (typeof value != 'undefined' && value != '') {
 
-			var result = (typeof p === "undefined") ? value : value.replace(
-					'@{}@', p);
+			var result = (typeof p1 === "undefined") ? value : value.replace(
+					'@{p1}@', p1);
+
+			result = (typeof p2 === "undefined") ? result : result.replace(
+					'@{p2}@', p2);
+
+			result = (typeof p3 === "undefined") ? result : result.replace(
+					'@{p3}@', p3);
+
 			return result;
 		}
 
@@ -377,7 +397,7 @@ toolbox.directive('jtooltip', function() {
 	};
 });
 
-toolbox.directive('err-src', function() {
+toolbox.directive('errSrc', function() {
 	return {
 		link : function(scope, element, attrs) {
 			element.bind('error', function() {
@@ -589,14 +609,14 @@ toolbox.controller('LoginController', function($scope, $location, Login,
 	$scope.login.failed = false;
 
 	$scope.option = 'register';
-	$scope.accountOption = "Forgot your password?";
+	$scope.accountOption = "base.login.forgot";
 
 	$scope.toggleLoginFace = function() {
 		if ($scope.option == 'register') {
-			$scope.accountOption = "Create an account";
+			$scope.accountOption = "base.login.new";
 			$scope.option = 'reset';
 		} else {
-			$scope.accountOption = "Forgot your password?";
+			$scope.accountOption = "base.login.forgot";
 			$scope.option = 'register';
 		}
 	};
