@@ -21,7 +21,7 @@ locale.controller('LocaleController', function($scope, $sce, $gloriaLocale,
 locale.service('$gloriaLocale', function($locale, $http, $window, $myCookie,
 		$cookieStore) {
 
-	var languages = [ 'en', 'es', 'it', 'pl', 'cz', 'ru' ];
+	var languages = [ 'en', 'es', 'it', 'pl', 'cs', 'ru' ];
 
 	$locale.dictionary = {};
 	var langCookie = $myCookie('preferredLang');
@@ -83,6 +83,9 @@ locale.service('$gloriaLocale', function($locale, $http, $window, $myCookie,
 					}
 				}).success(function(data) {
 					$locale.dictionary[name] = data;
+					if (then != undefined) {
+						then();
+					}
 				}).error(function() {
 					alert("Locale resource problem: " + name);
 				});
