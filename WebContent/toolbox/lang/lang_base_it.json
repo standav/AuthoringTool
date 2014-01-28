@@ -15,24 +15,22 @@
 			"content": "GLObal Robotic telescopes Intelligent Array for e-Science (GLORIA) è un progetto finanziato nell'ambito del Settimo Programma Quadro dell'Unione Europea (FP7/2007-2012) con grant agreement numero 283783. Qualsiasi opinione, risultato, conclusione o raccomandazione espressa in questo sito sono quelle dell'autore(i) e non necessariamente rispecchiano il punto di vista della EC o qualsiasi Istituzione coinvolta nel progetto GLORIA."
 		},
 		"partners": {
-			"header": "PARTNERS OF THE PROJECT"
+			"header": "PARTNERS DEL PROGETTO"
 		},
 		"bottom": {
-			"header": "AUTHORS AND LICENSES",
+			"header": "AUTORI E LICENZE",
 			"license": {
 				"own":  {
-					"pre": "All the content on this site by the",
-					"project": "GLORIA Project",
-					"post1": "is licensed under a",
+					"pre": "Tutto il contenuto di questo sito creato dal",
+					"project": "Progetto GLORIA",
+					"post1": "ed è distribuito con licenza",
 					"name": "Creative Commons Attribution 3.0 Unported License",
-					"post2": "except where otherwise",
-					"other": "noted"
+					"post2": "eccetto dove riportato",
+					"other": "diversamente"
 				}
 			},
-			"author": {			
-				"pre": "GLORIA Authoring Tool and the GLORIA services platform have been developed by @{p1}@ and are hosted in"
-			},
-			"flags": "All flag images are obtained from "
+			"author": "GLORIA Authoring Tool e la piattaforma dei servizi GLORIA sono stati sviluppati da @{p1}@ e sono ospitati presso",			
+			"flags": "Tutte le immagini delle bandiere sono prese da"
 		}
 	}
 }

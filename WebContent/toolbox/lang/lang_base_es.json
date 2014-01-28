@@ -21,7 +21,7 @@
 			"header": "AUTORES Y LICENCIAS",
 			"license": {
 				"own":  {
-					"pre": "Todo el contenido de este sitio por el ",
+					"pre": "Todo el contenido de este sitio por el",
 					"project": "Proyecto GLORIA",
 					"post1": "está bajo la licencia",
 					"name": "Creative Commons Attribution 3.0 Unported License",
@@ -30,7 +30,7 @@
 				}
 			},
 			"author": "GLORIA Authoring Tool y la plataforma de servicios de GLORIA han sido desarrollados por @{p1}@ y son mantenidos en ",
-			"flags": "Todas las imágenes de banderas han sido obtenidas desde "
+			"flags": "Todas las imágenes de banderas han sido obtenidas desde"
 		}
 	}
 }
