@@ -1,0 +1,16 @@
+{
+  "titles" : {
+    "home": "Domů",
+    "experiments": {
+      "header": "Experimenty",
+      "online": {
+        "header": "On-line",
+        "template" : "Šablona"
+        }
+      },
+      "generic": {
+      "header": "Obecná",
+      "template": "Šablona"	
+    }
+  }
+}
