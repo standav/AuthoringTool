@@ -1,0 +1,36 @@
+{
+    "login": {
+        "in": "Přihlásit",
+        "out": "Odhlásit",
+        "welcome": "Vítejte",
+        "failed": "Přihlášení selhalo",
+        "forgot": "Zapomněl(a) jste heslo?",
+        "new": "Dosud nemám účet",
+        "email": "Email",
+        "password": "Heslo"
+    },
+    "footer": {
+        "ack": {
+            "header": "PODĚKOVÁNÍ a UPOZORNĚNÍ",
+            "content": "GLObal Robotic telescopes Intelligent Array for e-Science (GLORIA) je projekt podpořený sedmým rámcovým programem EU (FP7/2007-2012), číslo smlouvy je 283783. Názory, závěry nebo doporuční, která jsou vyjádřena na těchto webových stránkách, nemusí nutně odrážet názor Evropské komise nebo některé z institucí zapojených do projektu GLORIA."
+        },
+        "partners": {
+            "header": "PARTNEŘI PROJEKTU"
+        },
+        "bottom": {
+            "header": "AUTHOŘI A LICENCE",
+            "license": {
+                "own": {
+                    "pre": "Veškerý obsah na těchto stránkách",
+                    "project": "projektu GLORIA",
+                    "post1": "je licencován licencí",
+                    "name": "Creative Commons Attribution 3.0 Unported License",
+                    "post2": "pokud není uvedeno",
+                    "other": "jinak"
+                }
+            },
+            "author": "GLORIA Authoring Tool a ostatní služby platformy GLORIA byly vyvinuty @{p1}@ a jsou hostovány",
+            "flags": "Obrázky vlajek byly získány ze "
+        }
+    }
+}
